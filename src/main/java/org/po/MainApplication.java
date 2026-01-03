@@ -11,7 +11,7 @@ public class MainApplication extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         FXMLLoader loader = new FXMLLoader(
-                getClass().getResource("/org/po/tcs/Splash.fxml")
+                getClass().getResource("/view/Splash.fxml")
         );
         Scene splashScene = new Scene(loader.load());
 
