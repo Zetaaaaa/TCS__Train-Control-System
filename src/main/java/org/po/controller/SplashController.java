@@ -4,6 +4,7 @@
     import javafx.animation.FadeTransition;
     import javafx.fxml.FXML;
     import javafx.fxml.FXMLLoader;
+    import javafx.scene.Parent;
     import javafx.scene.Scene;
     import javafx.scene.layout.StackPane;
     import javafx.stage.Stage;
@@ -20,10 +21,11 @@
         }
 
         private void playSplash() {
-            FadeTransition fade = new FadeTransition(Duration.seconds(2), root);
+            FadeTransition fade = new FadeTransition(Duration.seconds(0.0001), root);
             fade.setFromValue(1.0);
             fade.setToValue(0.0);
-            fade.setDelay(Duration.seconds(2));
+            //change duration delay here
+            fade.setDelay(Duration.seconds(0.00));
 
             fade.setOnFinished(e -> loadMainApp());
             fade.play();
@@ -31,11 +33,9 @@
 
         private void loadMainApp() {
             try {
-                FXMLLoader loader = new FXMLLoader(
-                        getClass().getResource("/org/po/tcs/Main.fxml")
-                );
-
-                Scene mainScene = new Scene(loader.load());
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/Main.fxml"));
+                Parent mainRoot = loader.load(); // injection happens here
+                Scene mainScene = new Scene(mainRoot);
 
                 Stage stage = (Stage) root.getScene().getWindow();
                 stage.setScene(mainScene);
