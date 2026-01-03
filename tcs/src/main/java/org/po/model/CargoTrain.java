@@ -1,0 +1,106 @@
+package org.po.model;
+
+public class CargoTrain extends Train {
+
+    //super.number zastępuje
+    private String number;
+    private String operator;
+    private Boolean running = false;
+    private Connection currentConnection;
+    private double connectionProgress;
+    private Station currentStation;
+    private int cargoCapacity;
+    private Boolean hasDiningCart;
+    private Boolean requiresMaintenance;
+
+
+    private CargoTrain(CargoTrainBuilder builder) {
+        super(builder.number, builder.operator);
+        this.currentConnection = builder.currentConnection;
+        this.connectionProgress = builder.connectionProgress;
+        this.currentStation = builder.currentStation;
+        this.cargoCapacity = builder.cargoCapacity;
+        this.hasDiningCart = builder.hasDiningCart;
+        this.requiresMaintenance = builder.requiresMaintenance;
+    }
+
+    public static class CargoTrainBuilder {
+
+        //required
+        private String number;
+        private String operator;
+        private int cargoCapacity;
+
+        private Boolean requiresMaintenance = false;
+        private Boolean hasDiningCart = false;
+
+        //optional
+        private Connection currentConnection;
+        private double connectionProgress;
+        private Station currentStation;
+
+
+
+        public CargoTrainBuilder(String number, String operator) {
+            this.number = number;
+            this.operator = operator;
+        }
+
+        public CargoTrainBuilder setCargoCapacity(int cargoCapacity) {
+            this.cargoCapacity = cargoCapacity;
+            return this;
+        }
+
+        public CargoTrainBuilder setRequiresMaitenance(boolean requiresMaintenance) {
+            this.requiresMaintenance = requiresMaintenance;
+            return this;
+        }
+
+        public CargoTrainBuilder setHasDiningCart(boolean hasDiningCart) {
+            this.hasDiningCart = hasDiningCart;
+            return this;
+        }
+
+
+        public CargoTrain build(){
+            if(number == null || operator == null){
+                throw new IllegalArgumentException("Cargotrain number or operator is null");
+            }
+            else{
+                return new CargoTrain(this);
+            }
+
+        }
+    }
+
+    @Override
+    public void start() {
+        if(!this.running){
+            this.running = true;
+        }
+
+    }
+
+    @Override
+    public void stop() {
+        if(this.running){
+            this.running = false;
+        }
+    }
+
+    @Override
+    public String getTrainData() {
+        //zamiast super.cos mozna wywalic konstruktor nadrzedny i zainicjalizować w tej klasie
+        return "Number: " + super.number +"\n" +
+                "Operator: " + super.operator+  "\n"+
+                "Capacity: " + cargoCapacity + " kgs \n" +
+                "Current connection: " + currentConnection + "\n"+
+                "Has dining cart: " + hasDiningCart +"\n"+
+                "Requires maintenance: "+ requiresMaintenance+ "\n";
+    }
+
+    @Override
+    public void initialize(Boolean isRunning, Station currentStation, double connectionProgress) {
+
+    }
+}
