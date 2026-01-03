@@ -6,7 +6,7 @@ public class CargoTrain extends Train {
     private String number;
     private String operator;
     private Boolean running = false;
-    private Connection currentConnection;
+    private Neighbor currentConnection;
     private double connectionProgress;
     private Station currentStation;
     private int cargoCapacity;
@@ -35,7 +35,7 @@ public class CargoTrain extends Train {
         private Boolean hasDiningCart = false;
 
         //optional
-        private Connection currentConnection;
+        private Neighbor currentConnection;
         private double connectionProgress;
         private Station currentStation;
 
