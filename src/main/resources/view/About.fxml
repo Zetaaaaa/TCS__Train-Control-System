@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<StackPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1">
+<!--    <Label style="-fx-font-size: 24px; -fx-font-weight: bold;" text="About" />-->
+
+    <VBox alignment="CENTER">
+                <Text style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-font-family: 'JetBrains Mono'"  styleClass="textAbout" text="Train Control System" />
+            <Text style="-fx-font-size: 24px; -fx-font-family: 'JetBrains Mono'" styleClass="ver" text="Version 0.01" />
+            <Text style="-fx-font-size: 24px; -fx-font-family: 'JetBrains Mono'"  styleClass="textAbout" text="Made by Adam Jablonski, Marcin Węgrzyn" />
+
+
+    </VBox>
+
+
+</StackPane>
