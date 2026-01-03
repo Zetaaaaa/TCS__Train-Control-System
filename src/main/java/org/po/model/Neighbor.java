@@ -1,10 +1,10 @@
 package org.po.model;
 
-public class Connection {
+public class Neighbor {
     Station station ;
     String destination;
 
-    public Connection(Station station, String destination) {
+    public Neighbor(Station station, String destination) {
         this.station = station;
         this.destination = destination;
     }

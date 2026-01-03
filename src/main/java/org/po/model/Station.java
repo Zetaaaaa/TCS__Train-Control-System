@@ -4,9 +4,9 @@ import java.util.ArrayList;
 
 public class Station {
     private String city;
-    private ArrayList<Connection> connections;
+    private ArrayList<Neighbor> connections;
 
-    public Station(String city, ArrayList<Connection> connections) {
+    public Station(String city, ArrayList<Neighbor> connections) {
         this.city = city;
         this.connections = connections;
     }

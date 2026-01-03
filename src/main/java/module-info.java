@@ -3,6 +3,9 @@ module org.po.tcs {
     requires javafx.fxml;
     requires javafx.graphics;
     requires java.desktop;
+    requires java.sql;
+    requires java.dotenv;
+    requires mysql.connector.java;
 
     opens org.po.controller to javafx.fxml;
     exports org.po;
