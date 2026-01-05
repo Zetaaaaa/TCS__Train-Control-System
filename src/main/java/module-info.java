@@ -6,6 +6,7 @@ module org.po.tcs {
     requires java.sql;
     requires java.dotenv;
     requires mysql.connector.java;
+    requires annotations;
 
     opens org.po.controller to javafx.fxml;
     exports org.po;

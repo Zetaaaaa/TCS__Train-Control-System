@@ -4,8 +4,11 @@ import io.github.cdimascio.dotenv.Dotenv;
 import java.sql.*;
 
 public class Database {
+
+    Connection connection;
+
     public void initializeConnection()  {
-        Connection connection = null;
+        connection = null;
         Dotenv dotenv = Dotenv.load();
 
         String url = dotenv.get("DB_URL");
@@ -21,12 +24,12 @@ public class Database {
             );
             System.out.println("Connected to database successfully");
 
-            //Testing functionality
-            ResultSet queryResult = executeQuery(connection,"select * from test");
-
-            while(queryResult.next()){
-                System.out.println(queryResult.getString(1) +" "+queryResult.getString(2));
-            }
+//            //Testing functionality
+//            ResultSet queryResult = executeQuery(connection,"select * from test");
+//
+//            while(queryResult.next()){
+//                System.out.println(queryResult.getString(1) +" "+queryResult.getString(2));
+//            }
         }
         catch (Exception e){
             System.out.println("Error in initializing connection");
@@ -47,12 +50,16 @@ public class Database {
         }
     }
 
-
+    public Connection getConnection() {
+        return this.connection;
+    }
 
     //For testing
     public static void main(String[] args) {
         Database database = new Database();
         database.initializeConnection();
     }
+
+
 
 }

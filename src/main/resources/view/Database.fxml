@@ -1,17 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<StackPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-           fx:controller="org.po.controller.DatabaseControler"
-            prefHeight="400.0" prefWidth="600.0">
+<StackPane prefHeight="400.0" prefWidth="600.0"  xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.po.controller.DatabaseControler">
+<VBox alignment="CENTER">
+    <HBox alignment="TOP_CENTER" maxHeight="70" prefHeight="50" prefWidth="150" spacing="10" style="-fx-start-margin: 90" StackPane.alignment="TOP_LEFT">
+        <ComboBox fx:id="tableSelect" />
 
-    <Label text="Database" style="-fx-font-size: 24px; -fx-font-weight: bold;" />
+        <Button fx:id="exectuteQuery" alignment="CENTER" text="Show table" />
+
+    </HBox>
+    <ScrollPane VBox.vgrow="ALWAYS" fx:id="scrollPane" maxHeight="300" maxWidth="500" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #ccb4b4">
+
+    </ScrollPane>
+</VBox>
+
+    <Label style="-fx-font-size: 24px; -fx-font-weight: bold;" styleClass="labelDarkBG" text="Database" />
 
 
 
