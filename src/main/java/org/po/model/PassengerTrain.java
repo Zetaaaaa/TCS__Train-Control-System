@@ -6,7 +6,7 @@ public class PassengerTrain extends Train {
     private String number;
     private String operator;
     private Boolean running = false;
-    private Connection current_connection;
+    private Neighbor current_connection;
     private double connection_progress;
     private Station current_station;
     private int passengerCapacity;
@@ -31,7 +31,7 @@ public class PassengerTrain extends Train {
         private String number;
         private String operator;
         private Boolean running;
-        private Connection current_connection;
+        private Neighbor current_connection;
         private double connection_progress;
         private Station current_station;
         private int passengerCapacity;
