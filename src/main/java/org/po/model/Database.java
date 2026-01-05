@@ -7,7 +7,7 @@ public class Database {
 
     Connection connection;
 
-    public void initializeConnection()  {
+    public boolean initializeConnection() throws SQLException {
         connection = null;
         Dotenv dotenv = Dotenv.load();
 
@@ -15,7 +15,6 @@ public class Database {
         String username = dotenv.get("DB_USER");
         String password = dotenv.get("DB_PASS");
 
-        System.out.println(username + " " + password);
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
 
@@ -24,17 +23,14 @@ public class Database {
             );
             System.out.println("Connected to database successfully");
 
-//            //Testing functionality
-//            ResultSet queryResult = executeQuery(connection,"select * from test");
-//
-//            while(queryResult.next()){
-//                System.out.println(queryResult.getString(1) +" "+queryResult.getString(2));
-//            }
         }
         catch (Exception e){
             System.out.println("Error in initializing connection");
             System.out.println(e.getMessage());
+            return false;
         }
+
+        return connection.isValid(2);
     }
 
     //sql interface
@@ -50,16 +46,22 @@ public class Database {
         }
     }
 
+   //update interface
+    public String executeUpdate(Connection connection, String query) throws SQLException {
+        Statement statement = connection.createStatement();
+        int resultSet = statement.executeUpdate(query);
+
+        if (resultSet > 0) {
+            return "good";
+        }
+        else{
+            return "bad";
+        }
+
+    }
+
     public Connection getConnection() {
         return this.connection;
     }
-
-    //For testing
-    public static void main(String[] args) {
-        Database database = new Database();
-        database.initializeConnection();
-    }
-
-
 
 }
