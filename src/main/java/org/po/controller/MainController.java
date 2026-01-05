@@ -18,8 +18,11 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import org.po.model.Database;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Objects;
 
 public class MainController {
@@ -40,20 +43,42 @@ public class MainController {
     @FXML
     private Button themeChange;
 
+    Database database;
+    Connection connection;
 
     private boolean darkTheme = false;
 
+    public void setDatabase(Database database) {
+        this.database = database;
+    }
+
+    public Database getDatabase() {
+        return database;
+    }
+
+    public void setConnection(Connection connection) {
+        this.connection = connection;
+    }
+
+    public Connection getConnection() {
+        return connection;
+    }
 
     @FXML
-    private void route(String path) throws IOException {
+    private void route(String path) throws IOException, SQLException {
         System.out.println( "/view/"+path + ".fxml");
-        StackPane pane = FXMLLoader.load((Objects.requireNonNull(getClass().getResource( "/view/"+path + ".fxml"))));
+        FXMLLoader loader  = new FXMLLoader((Objects.requireNonNull(getClass().getResource( "/view/"+path + ".fxml"))));
+        StackPane pane = loader.load();
+        if(Objects.equals(path, "Database")){
+            DatabaseControler dbController = loader.getController();
+            dbController.setDatabase(getDatabase());
+        }
+
         contentPane.getChildren().setAll(pane); // replace current center content
     }
 
     @FXML
-    private void initialize() {
-
+    private void initialize() throws SQLException {
 
         // Load icons
         Image sunIcon = new Image(getClass().getResource("/icons/sun.png").toExternalForm());
@@ -123,19 +148,19 @@ public class MainController {
                 Database.setMouseTransparent(false);
                 Settings.setMouseTransparent(false);
                 About.setMouseTransparent(false);
-            } catch (IOException e) {
+            } catch (IOException | SQLException e) {
                 throw new RuntimeException(e);
             }
         });
 
         Database.setOnAction(event -> {
-            try {
+            try  {
                 route("Database");
                 Main.setMouseTransparent(false);
                 Database.setMouseTransparent(true);
                 Settings.setMouseTransparent(false);
                 About.setMouseTransparent(false);
-            } catch (IOException e) {
+            } catch (IOException | SQLException e) {
                 throw new RuntimeException(e);
             }
         });
@@ -148,7 +173,7 @@ public class MainController {
                 Database.setMouseTransparent(false);
                 Settings.setMouseTransparent(true);
                 About.setMouseTransparent(false);
-            } catch (IOException e) {
+            } catch (IOException | SQLException e) {
                 throw new RuntimeException(e);
             }
         });
@@ -159,11 +184,14 @@ public class MainController {
                 Database.setMouseTransparent(false);
                 Settings.setMouseTransparent(false);
                 About.setMouseTransparent(true);
-            } catch (IOException e) {
+            } catch (IOException | SQLException e) {
                 throw new RuntimeException(e);
             }
         });
     }
+
+
+
 
 
 }
