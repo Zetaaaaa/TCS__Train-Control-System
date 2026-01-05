@@ -84,3 +84,7 @@
 .test{
     -fx-text-fill: #9d9de1;
 }
+
+.error{
+    -fx-text-fill: red;
+}

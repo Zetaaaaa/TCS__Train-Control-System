@@ -70,6 +70,9 @@
     -fx-content-display: left; /* icon on left, text on right */
 }
 
+.error{
+    -fx-text-fill: red;
+}
 
 .slide-button {
     -fx-background-color: #555;
