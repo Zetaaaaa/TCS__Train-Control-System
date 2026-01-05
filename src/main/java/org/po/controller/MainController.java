@@ -107,6 +107,7 @@ public class MainController {
             fadeOut.play();
         });
 
+
         try {
             route("Dashboard");
         } catch (IOException e) {
@@ -117,6 +118,11 @@ public class MainController {
         Main.setOnAction(event -> {
             try {
                 route("Dashboard");
+
+                Main.setMouseTransparent(true);
+                Database.setMouseTransparent(false);
+                Settings.setMouseTransparent(false);
+                About.setMouseTransparent(false);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -125,6 +131,10 @@ public class MainController {
         Database.setOnAction(event -> {
             try {
                 route("Database");
+                Main.setMouseTransparent(false);
+                Database.setMouseTransparent(true);
+                Settings.setMouseTransparent(false);
+                About.setMouseTransparent(false);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -133,6 +143,11 @@ public class MainController {
         Settings.setOnAction(event -> {
             try {
                 route("Settings");
+
+                Main.setMouseTransparent(false);
+                Database.setMouseTransparent(false);
+                Settings.setMouseTransparent(true);
+                About.setMouseTransparent(false);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -140,6 +155,10 @@ public class MainController {
         About.setOnAction(event -> {
             try {
                 route("About");
+                Main.setMouseTransparent(false);
+                Database.setMouseTransparent(false);
+                Settings.setMouseTransparent(false);
+                About.setMouseTransparent(true);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
