@@ -21,11 +21,12 @@
         }
 
         private void playSplash() {
-            FadeTransition fade = new FadeTransition(Duration.seconds(0.0001), root);
+            //change transition time here
+            FadeTransition fade = new FadeTransition(Duration.seconds(0.5), root);
             fade.setFromValue(1.0);
             fade.setToValue(0.0);
             //change duration delay here
-            fade.setDelay(Duration.seconds(0.00));
+            fade.setDelay(Duration.seconds(0));
 
             fade.setOnFinished(e -> loadMainApp());
             fade.play();

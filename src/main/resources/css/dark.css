@@ -46,8 +46,25 @@
     -fx-text-fill: #ba5353;
 }
 
-.label {
-    -fx-text-fill: white;
+.trainMap{
+    -fx-background-color: #2e332c;
+}
+
+.sidePanel{
+    -fx-background-color: #d6ead5;
+}
+
+.sideButton{
+ -fx-end-margin: 10;
+
+}
+
+.labelDarkBG{
+    -fx-text-fill: #e6e3e3;
+}
+
+.labelText {
+    -fx-text-fill: #222222;
 }
 .toggle-button .graphic {
     -fx-content-display: left; /* icon on left, text on right */

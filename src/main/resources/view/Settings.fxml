@@ -10,5 +10,5 @@
 <StackPane xmlns="http://javafx.com/javafx"
            xmlns:fx="http://javafx.com/fxml"
            prefHeight="400.0" prefWidth="600.0">
-    <Label text="Settings" style="-fx-font-size: 24px; -fx-font-weight: bold;" />
+    <Label text="Settings" styleClass="labelDarkBG"  style="-fx-font-size: 24px; -fx-font-weight: bold;" />
 </StackPane>

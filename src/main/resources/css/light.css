@@ -29,6 +29,14 @@
     -fx-transition: all 0.2s ease-in-out;
 }
 
+.trainMap{
+    -fx-background-color: #b5e4a3;
+}
+
+.sidePanel{
+    -fx-background-color: #4e4646;
+}
+
 .button:hover {
     -fx-background-color: #4b4f51;
     -fx-text-fill: #ffffff;
@@ -42,8 +50,12 @@
     -fx-fill: #6214ff ;
 }
 
-.label {
-    -fx-text-fill: black;
+.labelDarkBG{
+    -fx-text-fill: #000000;
+}
+
+.labelText {
+    -fx-text-fill: #dfdede;
 }
 
 .slide-button {

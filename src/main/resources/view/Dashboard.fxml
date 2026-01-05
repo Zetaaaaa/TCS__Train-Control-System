@@ -1,13 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<StackPane xmlns="http://javafx.com/javafx"
-           xmlns:fx="http://javafx.com/fxml"
-           prefHeight="400.0" prefWidth="600.0">
-    <Label text="Dashboard" style="-fx-font-size: 24px; -fx-font-weight: bold;" />
+<StackPane prefHeight="400.0" prefWidth="600.0" styleClass="trainMap" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1"
+fx:controller="org.po.controller.DashboardControler">
+
+    <!-- Centered title -->
+    <Label style="-fx-font-size: 24px; -fx-font-weight: bold;" styleClass="labelDarkBG" text="Dashboard" StackPane.alignment="CENTER" />
+
+    <!-- Top-right button -->
+    <HBox alignment="BOTTOM_RIGHT" prefWidth="100.0" translateX="200" fx:id="panelLayout">
+
+        <Button alignment="BOTTOM_RIGHT" mnemonicParsing="false" prefWidth="60.0" styleClass="sideButton" text="Data" fx:id="showPanel" />
+
+        <VBox alignment="TOP_CENTER" prefWidth="200" styleClass="sidePanel" >
+            <Label style="-fx-font-size: 24px; -fx-font-weight: bold;" text="Map Settings" styleClass="labelText" StackPane.alignment="CENTER" />
+        </VBox>
+
+    </HBox>
+
 </StackPane>
