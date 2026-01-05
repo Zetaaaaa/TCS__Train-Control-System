@@ -33,7 +33,7 @@
     -fx-background-color: #b5e4a3;
 }
 
-.sidePanel{
+.sidePanel, .dbBg{
     -fx-background-color: #4e4646;
 }
 
@@ -79,4 +79,8 @@
 
 .slide-button:selected .thumb {
     -fx-translate-x: 60; /* move thumb right when selected */
+}
+
+.test{
+    -fx-text-fill: #9d9de1;
 }

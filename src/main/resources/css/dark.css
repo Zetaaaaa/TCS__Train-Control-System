@@ -50,7 +50,7 @@
     -fx-background-color: #2e332c;
 }
 
-.sidePanel{
+.sidePanel,.dbBg{
     -fx-background-color: #d6ead5;
 }
 
@@ -91,4 +91,8 @@
 
 .slide-button:selected .thumb {
     -fx-translate-x: 60; /* move thumb right when selected */
+}
+
+.test{
+    -fx-text-fill: #282853;
 }

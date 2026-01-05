@@ -3,6 +3,10 @@ package org.po.controller;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.text.Text;
 import org.jetbrains.annotations.NotNull;
 import org.po.model.Database;
 
@@ -25,15 +29,22 @@ public class DatabaseControler {
 
 
     @FXML
-    private ScrollPane scrollPane;
+    private BorderPane borderPane;
+
+    @FXML
+    private ComboBox<String> tableAction;
 
     @FXML
     private ComboBox<String> tableSelect;;
+
+    private String setOperation = null;
 
     @FXML
     private Button exectuteQuery;
 
     private ArrayList<String> tableListNames = new ArrayList<>(List.of("stations","trains","rides","neighbors","routes"));
+
+    private ArrayList<String> tableSqlOperations = new ArrayList<>(List.of("SELECT","DELETE","INSERT"));
 
     Database database;
 
@@ -43,18 +54,30 @@ public class DatabaseControler {
         database.initializeConnection();
         Connection connection = database.getConnection();
 
-        tableSelect.getItems().addAll(tableListNames);
+        if(borderPane.getCenter() == null){
+            Label textLabel = new Label("No table selected...");
+                    textLabel.getStyleClass().add("test");
+            borderPane.setCenter(textLabel);
+        }
 
-        exectuteQuery.setOnAction(event -> {
+        tableSelect.getItems().addAll(tableSqlOperations);
+
+        tableSelect.setOnAction(event -> {
             ResultSet res = null;
             try {
                 res = database.executeQuery(connection, "select * from "+tableSelect.getSelectionModel().getSelectedItem());
                 TableView<Map<String, Object>> builtTable = buildTable(res);
-                scrollPane.setContent(builtTable);
+                borderPane.setCenter(builtTable);
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
         });
+
+        tableAction.getItems().addAll(tableSelect.getItems());
+        tableAction.setOnAction(event -> {
+            setOperation = tableAction.getSelectionModel().getSelectedItem();
+        });
+
     }
 
     public static TableView<Map<String, Object>> buildTable(ResultSet rs) throws SQLException {
