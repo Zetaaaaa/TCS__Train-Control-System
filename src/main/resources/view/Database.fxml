@@ -5,41 +5,27 @@
 
 <?import javafx.scene.text.Text?>
 <StackPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.po.controller.DatabaseControler">
+    <Label translateX="10" StackPane.alignment="TOP_LEFT" text="Database status: " fx:id="dbStatus"/>
 <VBox alignment="TOP_CENTER">
 
-
         <HBox alignment="CENTER" maxHeight="30" prefHeight="50" prefWidth="150" spacing="20" style="-fx-start-margin: 90; -fx-padding: 20" StackPane.alignment="CENTER">
-            <Label styleClass="labelDarkBG" text="Select table :" /> <ComboBox fx:id="tableSelect" />
+            <Label styleClass="labelDarkBG" text="Select table :" fx:id="tableSelectLabel" /> <ComboBox fx:id="tableSelect" />
         </HBox>
 
 
         <BorderPane fx:id="borderPane" maxHeight="800" maxWidth="2000" prefHeight="488.0" prefWidth="849.0" styleClass="dbBg" VBox.vgrow="ALWAYS">
-
          <left>
-                <TitledPane maxHeight="Infinity" prefHeight="200.0" prefWidth="250.0"  styleClass="sidePanel" text="Table actions" >
-
-                    <VBox alignment="TOP_CENTER">
+                <TitledPane maxHeight="Infinity" prefHeight="200.0" prefWidth="250.0"  styleClass="sidePanel" text="Table actions" fx:id="dataPane" >
+                    <VBox alignment="TOP_CENTER" spacing="10">
                         <HBox spacing="10">
-                            <Text textAlignment="CENTER" text="select table action:"/> <ComboBox fx:id="tableAction" />
+                            <Text textAlignment="CENTER" text="Select table action: "/> <ComboBox fx:id="tableAction" />
                         </HBox>
-
+                        <Separator/>
+                        <VBox spacing="10" fx:id="formSpace">
+                        </VBox>
                     </VBox>
-
-
-
-
-
                 </TitledPane>
-         </left></BorderPane>
-
-
+         </left>
+        </BorderPane>
 </VBox>
-
-
-
-
-<!--    <Label style="-fx-font-size: 24px; -fx-font-weight: bold;" styleClass="labelDarkBG" text="Database" />-->
-
-
-
 </StackPane>
