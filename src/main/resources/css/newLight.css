@@ -1,0 +1,185 @@
+/* =========================================================
+   PALETTE: Light Mode
+   ========================================================= */
+.root {
+    /* Base colors */
+    -clr-dark-a0: #000000;
+    -clr-light-a0: #ffffff;
+
+    /* Theme primary colors */
+    -clr-primary-a0:  #9168fa;
+    -clr-primary-a10: #805cdb;
+    -clr-primary-a20: #7051bd;
+    -clr-primary-a30: #60459f;
+    -clr-primary-a40: #503b83;
+    -clr-primary-a50: #413068;
+    -clr-primary-a60: #32254d;
+    -clr-primary-a70: #241b35;
+
+    /* Surface colors */
+    -clr-surface-a0:  #ffffff;
+    -clr-surface-a10: #f0f0f0;
+    -clr-surface-a20: #e1e1e1;
+    -clr-surface-a30: #d3d3d3;
+    -clr-surface-a40: #c5c5c5;
+    -clr-surface-a50: #b6b6b6;
+
+    /* Tonal surface colors */
+    -clr-surface-tonal-a0:  #f5efff;
+    -clr-surface-tonal-a10: #e7e2f0;
+    -clr-surface-tonal-a20: #dad5e1;
+    -clr-surface-tonal-a30: #cdc9d3;
+    -clr-surface-tonal-a40: #bfbcc5;
+    -clr-surface-tonal-a50: #b2b0b6;
+
+    /* Status colors */
+    -clr-success-a0: #1b7f5c;
+    -clr-warning-a0: #b8871f;
+    -clr-danger-a0: #b13535;
+
+    /* JavaFX Overrides for Light Mode */
+    -fx-base: -clr-surface-a0;
+    -fx-control-inner-background: -clr-surface-a0;
+    -fx-text-base-color: -clr-dark-a0;
+}
+
+/* =========================================================
+   NAVIGATION BAR
+   ========================================================= */
+.navbar-container {
+    -fx-background-color: -clr-primary-a0;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.15), 10, 0, 0, 2);
+}
+
+.navbar {
+    -fx-background-color: transparent;
+    -fx-padding: 10 20;
+}
+
+.nav-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 4;
+    -fx-padding: 8 15;
+}
+
+.nav-button:hover {
+    -fx-background-color: -clr-primary-a10;
+}
+
+.nav-button:pressed {
+    -fx-background-color: -clr-primary-a20;
+}
+
+/* =========================================================
+   DATABASE SCREEN
+   ========================================================= */
+.db-main-container {
+    -fx-background-color: -clr-surface-a10;
+}
+
+.db-header {
+    -fx-background-color: -clr-surface-tonal-a0;
+    -fx-border-color: transparent transparent -clr-surface-a20 transparent;
+    -fx-border-width: 0 0 1 0;
+}
+
+.status-label {
+    -fx-text-fill: -clr-success-a0;
+    -fx-font-weight: bold;
+}
+
+.text-main {
+    -fx-fill: -clr-dark-a0;
+}
+
+.text-subtle {
+    -fx-text-fill: -clr-surface-a50;
+    -fx-fill: -clr-surface-a50;
+}
+
+.sidePanel {
+    -fx-background-color: -clr-surface-tonal-a10;
+}
+
+.sidePanel > .title {
+    -fx-background-color: -clr-surface-tonal-a20;
+    -fx-text-fill: -clr-primary-a40;
+}
+
+.combo-primary {
+    -fx-background-color: -clr-primary-a0;
+    -fx-mark-color: white;
+}
+
+.combo-primary .label {
+    -fx-text-fill: white;
+}
+
+.data-view-placeholder {
+    -fx-background-color: -clr-surface-a0;
+    -fx-border-color: -clr-surface-a20;
+    -fx-border-style: dashed;
+    -fx-border-width: 2;
+    -fx-border-radius: 5;
+}
+
+/* =========================================================
+   ABOUT SCREEN
+   ========================================================= */
+.about-root {
+    -fx-background-color: -clr-surface-a0;
+}
+
+.about-title {
+    -fx-fill: -clr-primary-a0;
+    -fx-font-family: "JetBrains Mono";
+    -fx-font-size: 32px;
+    -fx-font-weight: bold;
+}
+
+.about-version {
+    -fx-fill: -clr-surface-a50;
+    -fx-font-family: "JetBrains Mono";
+    -fx-font-size: 16px;
+}
+
+.about-header {
+    -fx-fill: -clr-primary-a50;
+    -fx-font-family: "JetBrains Mono";
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+}
+
+.about-feature {
+    -fx-fill: -clr-dark-a0;
+    -fx-font-family: "JetBrains Mono";
+    -fx-font-size: 18px;
+}
+
+.about-credits {
+    -fx-fill: -clr-primary-a30;
+    -fx-font-family: "JetBrains Mono";
+    -fx-font-size: 16px;
+    -fx-font-style: italic;
+}
+
+.about-separator .line {
+    -fx-border-color: -clr-surface-a20 transparent transparent transparent;
+}
+
+.station-popup {
+    -fx-background-color: -clr-surface-tonal-a0;
+    -fx-background-radius: 10;
+    -fx-border-color: -clr-primary-a0;
+    -fx-border-radius: 10;
+    -fx-border-width: 1;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 10, 0, 0, 4);
+}
+
+.station-popup-title {
+    -fx-text-fill: -clr-primary-a50;
+    -fx-font-weight: bold;
+    -fx-font-size: 16px;
+}

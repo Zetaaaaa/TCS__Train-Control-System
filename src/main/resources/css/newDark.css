@@ -1,0 +1,190 @@
+/* =========================================================
+   Base colors (Inverted for Dark Mode)
+   ========================================================= */
+.root {
+    -clr-dark-a0: #ffffff;  /* Primary text becomes white */
+    -clr-light-a0: #000000; /* Contrast background becomes black */
+
+    /* Theme primary colors (Brightened slightly for dark mode) */
+    -clr-primary-a0:  #b396ff; /* Lighter purple to pop on dark */
+    -clr-primary-a10: #a180f0;
+    -clr-primary-a20: #9168fa;
+    -clr-primary-a30: #805cdb;
+    -clr-primary-a40: #7051bd;
+    -clr-primary-a50: #60459f;
+    -clr-primary-a60: #503b83;
+    -clr-primary-a70: #413068;
+    -clr-primary-a80: #32254d;
+    -clr-primary-a90: #ffffff;
+
+    /* Surface colors (Dark Grays) */
+    -clr-surface-a0:  #121212; /* Deep background */
+    -clr-surface-a10: #1e1e1e; /* Elevated surface (cards) */
+    -clr-surface-a20: #2c2c2c;
+    -clr-surface-a30: #383838;
+    -clr-surface-a40: #4a4a4a;
+    -clr-surface-a50: #888888; /* Muted text/borders */
+
+    /* Tonal surface colors (Deep Purple/Navy Grays) */
+    -clr-surface-tonal-a0:  #1a1625; /* Dark purple tint */
+    -clr-surface-tonal-a10: #231e2e;
+    -clr-surface-tonal-a20: #2d2838;
+    -clr-surface-tonal-a30: #383344;
+    -clr-surface-tonal-a40: #443e50;
+    -clr-surface-tonal-a50: #514b5c;
+
+    /* Status colors (Vibrant versions for visibility) */
+    -clr-success-a0: #28be8a;
+    -clr-success-a10: #58dbad;
+    -clr-success-a20: #89e8ca;
+
+    -clr-warning-a0: #dfae44;
+    -clr-warning-a10: #ebca85;
+    -clr-warning-a20: #f4deb1;
+
+    -clr-danger-a0: #d06262;
+    -clr-danger-a10: #e29d9d;
+    -clr-danger-a20: #f1c9c9;
+
+    -clr-info-a0: #347ada;
+    -clr-info-a10: #74a4e6;
+    -clr-info-a20: #a8c8f0;
+
+    /* JavaFX Standard Overrides */
+    -fx-base: -clr-surface-a0;
+    -fx-control-inner-background: -clr-surface-a10;
+    -fx-text-base-color: -clr-dark-a0;
+}
+/* This same CSS block works for BOTH files because the variables adapt */
+
+.navbar {
+    -fx-background-color: transparent;
+    -fx-padding: 10 20;
+}
+
+/* Nav Buttons */
+.nav-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: -clr-primary-a0; /* Purple text on dark bg */
+    -fx-font-weight: bold;
+    -fx-background-radius: 4;
+    -fx-transition: 0.2s;
+}
+
+.nav-button:hover {
+    -fx-background-color: -clr-surface-tonal-a20;
+    -fx-text-fill: -clr-dark-a0; /* White text on hover */
+}
+/* Container Backgrounds */
+.db-main-container {
+    -fx-background-color: -clr-surface-a0;
+}
+
+.db-header {
+    -fx-background-color: -clr-surface-tonal-a0;
+    -fx-border-color: transparent transparent -clr-surface-a20 transparent;
+    -fx-border-width: 0 0 1 0;
+}
+
+/* Text and Labels */
+.status-label {
+    -fx-text-fill: -clr-success-a0; /* Using your success green */
+    -fx-font-weight: bold;
+}
+
+.text-main {
+    -fx-fill: -clr-dark-a0; /* Pure white in dark mode */
+}
+
+.text-subtle {
+    -fx-text-fill: -clr-surface-a50;
+    -fx-fill: -clr-surface-a50;
+}
+
+/* Sidebar (TitledPane) */
+.sidePanel {
+    -fx-background-color: -clr-surface-tonal-a10;
+}
+
+.sidePanel > .title {
+    -fx-background-color: -clr-primary-a70; /* Deep purple header */
+    -fx-text-fill: -clr-primary-a0;         /* Light purple text */
+}
+
+/* ComboBox in Dark Mode */
+.combo-primary {
+    -fx-background-color: -clr-primary-a20;
+    -fx-mark-color: white;
+}
+
+.combo-primary .label {
+    -fx-text-fill: white;
+}
+
+/* Content Area Placeholder */
+.data-view-placeholder {
+    -fx-background-color: -clr-surface-a10;
+    -fx-border-color: -clr-surface-a20;
+    -fx-border-style: dashed;
+    -fx-border-width: 2;
+    -fx-border-radius: 5;
+    -fx-background-insets: 10;
+}
+
+.about-root {
+    -fx-background-color: -clr-surface-a0;
+}
+
+/* Titles use the bright purple to pop */
+.about-title {
+    -fx-fill: -clr-primary-a0;
+    -fx-font-family: "JetBrains Mono";
+    -fx-font-size: 32px;
+    -fx-font-weight: bold;
+}
+
+.about-version {
+    -fx-fill: -clr-surface-a50; /* Muted gray */
+    -fx-font-family: "JetBrains Mono";
+    -fx-font-size: 16px;
+}
+
+.about-header {
+    -fx-fill: -clr-dark-a0; /* Pure white */
+    -fx-font-family: "JetBrains Mono";
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+}
+
+.about-feature {
+    -fx-fill: -clr-surface-a40; /* Soft gray */
+    -fx-font-family: "JetBrains Mono";
+    -fx-font-size: 18px;
+}
+
+.about-credits {
+    -fx-fill: -clr-primary-a20; /* Slightly darker purple */
+    -fx-font-family: "JetBrains Mono";
+    -fx-font-size: 16px;
+    -fx-font-style: italic;
+}
+
+/* Styled Separator */
+.about-separator .line {
+    -fx-border-color: -clr-surface-a20 transparent transparent transparent;
+}
+
+.station-popup {
+    -fx-background-color: -clr-surface-tonal-a10;
+    -fx-background-radius: 10;
+    -fx-border-color: -clr-primary-a20;
+    -fx-border-radius: 10;
+    -fx-border-width: 1;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.6), 15, 0, 0, 6);
+}
+
+.station-popup-title {
+    -fx-text-fill: -clr-primary-a0;
+    -fx-font-weight: bold;
+    -fx-font-size: 16px;
+}

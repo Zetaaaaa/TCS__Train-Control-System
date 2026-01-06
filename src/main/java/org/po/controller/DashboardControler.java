@@ -4,8 +4,10 @@ import javafx.animation.Interpolator;
 import javafx.animation.PauseTransition;
 import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.PopupControl;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -130,6 +132,29 @@ public class DashboardControler {
         stationBox.setOnMouseClicked(event -> {
             System.out.println("Station clicked: " + station.getName());
 
+            // Create a PopupControl
+            PopupControl popup = new PopupControl();
+
+// Create content for the popup
+            VBox content = new VBox(10);
+            content.getStyleClass().add("station-popup"); // Assign class
+            content.setPadding(new Insets(15));
+
+// Station name label
+            Label nameLabel = new Label(station.getName());
+            nameLabel.getStyleClass().add("station-popup-title"); // Assign class
+
+            content.getChildren().addAll(nameLabel);
+            popup.getScene().setRoot(content);
+
+            // Set the content to the popup
+            popup.getScene().setRoot(content);
+
+            // Position popup near the mouse click
+            popup.show(stationBox, event.getScreenX() + 10, event.getScreenY() + 10);
+
+            // Hide popup when clicking anywhere else
+            content.setOnMouseClicked(e -> popup.hide());
             boolean prev_select = select_mult;
             select_mult = event.isShiftDown();
             if (prev_select != select_mult) {selected_stations.clear();}
