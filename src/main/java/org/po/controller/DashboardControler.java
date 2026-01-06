@@ -60,21 +60,28 @@ public class DashboardControler {
         System.out.println(database.getConnection());
         setConnection(database.getConnection());
         // Sample query
-        ResultSet rs = database.executeQuery(connection, "SELECT * FROM stations");
+        ResultSet rs = database.executeQuery(connection, "SELECT * FROM stations order by station_id");
 
         while (rs.next()) {
             System.out.println(rs.getString(1)+" "+rs.getString(2)+" "+rs.getString(3));
             stations.add(new Station(
                     rs.getString(2),
-                    new Position(rs.getInt(3)*10, rs.getInt(4)*10),
+                    new Position(rs.getInt(3)*8, rs.getInt(4)*8),
                     rs.getString(2),new ArrayList<>()));
         }
 
+        ResultSet rs2 = database.executeQuery(connection, "SELECT station_id, destination_id  FROM neighbors order by station_id");
 
-        stations.get(0).addConnection(stations.get(1));
-        stations.get(1).addConnection(stations.get(0));
-        stations.get(1).addConnection(stations.get(2));
-        stations.get(2).addConnection(stations.get(1));
+        while (rs2.next()) {
+            System.out.println(rs2.getString(1)+" "+rs2.getString(2));
+            stations.get(rs2.getInt(1)-1).addConnection(stations.get(rs2.getInt(2)-1));
+        }
+
+
+//        stations.get(0).addConnection(stations.get(1));
+//        stations.get(1).addConnection(stations.get(0));
+//        stations.get(1).addConnection(stations.get(2));
+//        stations.get(2).addConnection(stations.get(1));
 
         for (Station s : stations) {
             drawStationMarker(s, mapContainer);
@@ -127,8 +134,8 @@ public class DashboardControler {
         );
         stationBox.setMinSize(100, 100);
         stationBox.setMaxSize(100, 100);
-        stationBox.setLayoutX(station.getPosition().getX());
-        stationBox.setLayoutY(station.getPosition().getY());
+        stationBox.setLayoutX(station.getPosition().getX()-50);
+        stationBox.setLayoutY(station.getPosition().getY()-50);
 
         container.getChildren().add(stationBox);
     }
