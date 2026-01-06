@@ -22,6 +22,8 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.List;
 
 public class DashboardControler {
@@ -40,6 +42,10 @@ public class DashboardControler {
     private Database database;
 
     private Connection connection;
+
+    private boolean select_mult = false;
+
+    private HashMap<Integer,Station> selected_stations = new HashMap<>();
 
     private ArrayList<Station> stations = new ArrayList<>();
 
@@ -78,13 +84,10 @@ public class DashboardControler {
         }
 
 
-//        stations.get(0).addConnection(stations.get(1));
-//        stations.get(1).addConnection(stations.get(0));
-//        stations.get(1).addConnection(stations.get(2));
-//        stations.get(2).addConnection(stations.get(1));
-
         for (Station s : stations) {
             drawStationMarker(s, mapContainer);
+        }
+        for (Station s : stations) {
             for (Neighbor n : s.getConnections()) {
                 drawSingleConnection(s, n, mapContainer);
             }
@@ -101,42 +104,52 @@ public class DashboardControler {
 
     @FXML
     public void initialize() throws SQLException {
-//        ArrayList<Station> stations = new ArrayList<>();
-//        stations.add(new Station(
-//                "Krakow Glowny",
-//                new Position(50.0, 0.0),
-//                "Krakow",new ArrayList<>()));
-//        stations.add(new Station(
-//                "Krakow Nowa Huta",
-//                new Position(250.0, 20.0),
-//                "Krakow",
-//                new ArrayList<>()));
-//        stations.add(new Station(
-//                "Tarnow",
-//                new Position(650.0, 100.0),
-//                "Tarnow",
-//                new ArrayList<>()));
 
     }
 
     public void drawStationMarker(Station station, Pane container) {
+        //!!!STYLING SHOULD BE REPLACED BY CSS CLASS AND BY STYLED IN CSS FILE!!!
         Label stationLabel = new Label(station.getName());
-        stationLabel.setStyle("-fx-font-size: 10px;");
-
+        stationLabel.setStyle("-fx-font-size: 10px;"+"-fx-font-weight: bold;"+"-fx-text-fill: white;");
+        stationLabel.getStyleClass().add("labelText");
         VBox stationBox = new VBox(stationLabel);
         stationBox.setStyle(
-                "-fx-background-color: #ffffff; " +
-                        "-fx-border-color: #34495e; " +
-                        "-fx-border-width: 1px; " +
-                        "-fx-padding: 2px; " +
-                        "-fx-background-radius: 2px; " +
-                        "-fx-border-radius: 2px;"
+                "-fx-background-color: #3b3f42; " +
+                        "-fx-background-radius: 8px; " +
+                        "-fx-padding: 5px 15px; " +
+                        "-fx-alignment: CENTER;"
         );
         stationBox.setMinSize(100, 100);
         stationBox.setMaxSize(100, 100);
         stationBox.setLayoutX(station.getPosition().getX()-50);
         stationBox.setLayoutY(station.getPosition().getY()-50);
 
+        stationLabel.setMouseTransparent(true);
+        stationBox.setPickOnBounds(true);
+        stationBox.setMouseTransparent(false);
+        stationBox.setOnMouseClicked(event -> {
+            System.out.println("Station clicked: " + station.getName());
+
+            boolean prev_select = select_mult;
+            select_mult = event.isShiftDown();
+            if (prev_select != select_mult) {selected_stations.clear();}
+            if(select_mult==false){
+                if(selected_stations!=null){
+                selected_stations.clear();
+                selected_stations.put(stations.indexOf(station),station);
+                }
+                System.out.println(selected_stations.values().stream().findFirst().orElse(null));
+            }
+            else{
+                selected_stations.put(stations.indexOf(station),station);
+                System.out.println(selected_stations.values());
+            }
+
+
+            //handleStationClick(station);
+        });
+        stationBox.setOnMouseEntered(e -> stationBox.setStyle(stationBox.getStyle() + "-fx-background-color: #9e9e9e;"));
+        stationBox.setOnMouseExited(e -> stationBox.setStyle(stationBox.getStyle() + "-fx-background-color: #3b3f42;"));
         container.getChildren().add(stationBox);
     }
     public void drawSingleConnection(Station source, Neighbor connection, Pane container) {

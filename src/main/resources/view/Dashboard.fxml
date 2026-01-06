@@ -7,10 +7,10 @@
    <Pane prefHeight="200.0" prefWidth="200.0" fx:id="mapContainer"/>
 
     <!-- Centered title -->
-    <Label style="-fx-font-size: 24px; -fx-font-weight: bold;" styleClass="labelDarkBG" text="Dashboard" StackPane.alignment="CENTER" />
+    <Label style="-fx-font-size: 24px; -fx-font-weight: bold;" styleClass="labelDarkBG" text="Dashboard" StackPane.alignment="CENTER"/>
 
     <!-- Top-right button -->
-    <HBox fx:id="panelLayout" alignment="BOTTOM_RIGHT" prefWidth="100.0" translateX="200">
+    <HBox fx:id="panelLayout" alignment="BOTTOM_RIGHT" prefWidth="100.0" translateX="200" pickOnBounds="false">
 
         <Button fx:id="showPanel" alignment="BOTTOM_RIGHT" mnemonicParsing="false" prefWidth="60.0" styleClass="sideButton" text="Data" />
 
