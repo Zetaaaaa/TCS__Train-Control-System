@@ -1,6 +1,6 @@
 package org.po.model;
 
-public class TrainFactory extends Entity {
+public class TrainFactory implements Entity {
 //Main function used to build trains, makes creation of trains safer and more scalable and modular, it makes use of builders for chosen class to further control object initiation
     public static Train getTrain(String type, String number, String operator, int capacity, boolean dining, boolean maintenance){
         if("CARGO".equalsIgnoreCase(type)){

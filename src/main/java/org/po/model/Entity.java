@@ -1,8 +1,6 @@
 package org.po.model;
 
-import javax.swing.text.Position;
-
-abstract class Entity {
-    String name;
-    Position position;
+interface Entity {
+    String name = "";
+    Position position = new Position(0,0);
 }
