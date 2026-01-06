@@ -39,13 +39,7 @@
                 Parent mainRoot = loader.load(); // injection happens here
                 Scene mainScene = new Scene(mainRoot);
 
-                Database db = new Database();
-                MainController mainController = loader.getController();
-                mainController.setDatabase(db);
-
-                mainController.setConnection(db.getConnection());
-
-
+                
                 Stage stage = (Stage) root.getScene().getWindow();
                 stage.setScene(mainScene);
                 stage.centerOnScreen();

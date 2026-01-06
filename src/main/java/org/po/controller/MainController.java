@@ -69,10 +69,21 @@ public class MainController {
         System.out.println( "/view/"+path + ".fxml");
         FXMLLoader loader  = new FXMLLoader((Objects.requireNonNull(getClass().getResource( "/view/"+path + ".fxml"))));
         StackPane pane = loader.load();
+
+        Object controller = loader.getController();
+
+        if (controller instanceof DashboardControler d) {
+            d.setDatabase(database);
+        }
+
         if(Objects.equals(path, "Database")){
             DatabaseControler dbController = loader.getController();
             dbController.setDatabase(getDatabase());
         }
+//        else if(Objects.equals(path, "Dashboard")){
+//            DashboardControler dashboardControler = loader.getController();
+//            dashboardControler.setDatabase(getDatabase());
+//        }
 
         contentPane.getChildren().setAll(pane); // replace current center content
     }
@@ -80,118 +91,124 @@ public class MainController {
     @FXML
     private void initialize() throws SQLException {
 
-        // Load icons
-        Image sunIcon = new Image(getClass().getResource("/icons/sun.png").toExternalForm());
-        Image moonIcon = new Image(getClass().getResource("/icons/moon.png").toExternalForm());
+        // ✅ Safe to create Database here
+        database = new Database();
+        setDatabase(database);
 
-        ImageView iconView = new ImageView(sunIcon);
-        iconView.setFitWidth(16);
-        iconView.setFitHeight(16);
-        themeChange.setGraphic(iconView);
-
-        Platform.runLater(() -> {
-            Scene scene = themeChange.getScene();
-            if (scene != null) {
-                scene.getStylesheets().add(getClass().getResource("/css/light.css").toExternalForm());
-            }
-        });
-
-        // Theme toggle action
-        themeChange.setOnAction(event -> {
-            // Inside your themeChange.setOnAction
-            Scene scene = themeChange.getScene();
-            if (scene == null) return;
-
-            Pane root = (Pane) scene.getRoot();  // or StackPane, BorderPane, whatever your root is
-
-            // Fade out
-            FadeTransition fadeOut = new FadeTransition(Duration.millis(300), root);
-            fadeOut.setFromValue(1.0);
-            fadeOut.setToValue(0.0);
-            fadeOut.setOnFinished(e -> {
-                // Switch theme after fade-out
-                scene.getStylesheets().clear();
-
-                if (darkTheme) {
-                    scene.getStylesheets().add(getClass().getResource("/css/light.css").toExternalForm());
-                    darkTheme = false;
-                    iconView.setImage(sunIcon);
-                } else {
-                    scene.getStylesheets().add(getClass().getResource("/css/dark.css").toExternalForm());
-                    darkTheme = true;
-                    iconView.setImage(moonIcon);
-                }
-
-                // Fade in
-                FadeTransition fadeIn = new FadeTransition(Duration.millis(300), root);
-                fadeIn.setFromValue(0.0);
-                fadeIn.setToValue(1.0);
-                fadeIn.play();
-            });
-
-            fadeOut.play();
-        });
-
-
-        try {
+        try{
             route("Dashboard");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        refreshFields();
 
-
-        Main.setOnAction(event -> {
-            try {
-                route("Dashboard");
-
-                Main.setMouseTransparent(true);
-                Database.setMouseTransparent(false);
-                Settings.setMouseTransparent(false);
-                About.setMouseTransparent(false);
-            } catch (IOException | SQLException e) {
-                throw new RuntimeException(e);
-            }
-        });
-
-        Database.setOnAction(event -> {
-            try  {
-                route("Database");
-                Main.setMouseTransparent(false);
-                Database.setMouseTransparent(true);
-                Settings.setMouseTransparent(false);
-                About.setMouseTransparent(false);
-            } catch (IOException | SQLException e) {
-                throw new RuntimeException(e);
-            }
-        });
-
-        Settings.setOnAction(event -> {
-            try {
-                route("Settings");
-
-                Main.setMouseTransparent(false);
-                Database.setMouseTransparent(false);
-                Settings.setMouseTransparent(true);
-                About.setMouseTransparent(false);
-            } catch (IOException | SQLException e) {
-                throw new RuntimeException(e);
-            }
-        });
-        About.setOnAction(event -> {
-            try {
-                route("About");
-                Main.setMouseTransparent(false);
-                Database.setMouseTransparent(false);
-                Settings.setMouseTransparent(false);
-                About.setMouseTransparent(true);
-            } catch (IOException | SQLException e) {
-                throw new RuntimeException(e);
-            }
-        });
     }
 
+    private void refreshFields(){
+        System.out.println("DATABASE");
+        System.out.println(database);
+            // Load icons
+            Image sunIcon = new Image(getClass().getResource("/icons/sun.png").toExternalForm());
+            Image moonIcon = new Image(getClass().getResource("/icons/moon.png").toExternalForm());
+
+            ImageView iconView = new ImageView(sunIcon);
+            iconView.setFitWidth(16);
+            iconView.setFitHeight(16);
+            themeChange.setGraphic(iconView);
+
+            Platform.runLater(() -> {
+                Scene scene = themeChange.getScene();
+                if (scene != null) {
+                    scene.getStylesheets().add(getClass().getResource("/css/light.css").toExternalForm());
+                }
+            });
+
+            // Theme toggle action
+            themeChange.setOnAction(event -> {
+                // Inside your themeChange.setOnAction
+                Scene scene = themeChange.getScene();
+                if (scene == null) return;
+
+                Pane root = (Pane) scene.getRoot();  // or StackPane, BorderPane, whatever your root is
+
+                // Fade out
+                FadeTransition fadeOut = new FadeTransition(Duration.millis(300), root);
+                fadeOut.setFromValue(1.0);
+                fadeOut.setToValue(0.0);
+                fadeOut.setOnFinished(e -> {
+                    // Switch theme after fade-out
+                    scene.getStylesheets().clear();
+
+                    if (darkTheme) {
+                        scene.getStylesheets().add(getClass().getResource("/css/light.css").toExternalForm());
+                        darkTheme = false;
+                        iconView.setImage(sunIcon);
+                    } else {
+                        scene.getStylesheets().add(getClass().getResource("/css/dark.css").toExternalForm());
+                        darkTheme = true;
+                        iconView.setImage(moonIcon);
+                    }
+
+                    // Fade in
+                    FadeTransition fadeIn = new FadeTransition(Duration.millis(300), root);
+                    fadeIn.setFromValue(0.0);
+                    fadeIn.setToValue(1.0);
+                    fadeIn.play();
+                });
+
+                fadeOut.play();
+            });
 
 
 
 
-}
+            Main.setOnAction(event -> {
+                try {
+                    route("Dashboard");
+                    Main.setMouseTransparent(true);
+                    Database.setMouseTransparent(false);
+                    Settings.setMouseTransparent(false);
+                    About.setMouseTransparent(false);
+                } catch (IOException | SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+
+            Database.setOnAction(event -> {
+                try  {
+                    route("Database");
+                    Main.setMouseTransparent(false);
+                    Database.setMouseTransparent(true);
+                    Settings.setMouseTransparent(false);
+                    About.setMouseTransparent(false);
+                } catch (IOException | SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+
+            Settings.setOnAction(event -> {
+                try {
+                    route("Settings");
+
+                    Main.setMouseTransparent(false);
+                    Database.setMouseTransparent(false);
+                    Settings.setMouseTransparent(true);
+                    About.setMouseTransparent(false);
+                } catch (IOException | SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+            About.setOnAction(event -> {
+                try {
+                    route("About");
+                    Main.setMouseTransparent(false);
+                    Database.setMouseTransparent(false);
+                    Settings.setMouseTransparent(false);
+                    About.setMouseTransparent(true);
+                } catch (IOException | SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+        }
+    }
+
