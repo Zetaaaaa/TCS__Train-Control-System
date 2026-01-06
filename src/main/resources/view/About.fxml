@@ -11,10 +11,10 @@
                 <Text style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-font-family: 'JetBrains Mono'" styleClass="textAbout" text="Train Control System" />
             <Text style="-fx-font-size: 24px; -fx-font-family: 'JetBrains Mono'" styleClass="ver" text="Version 0.2" />
 
-            <Text style="-fx-font-size: 24px; -fx-font-family: 'JetBrains Mono'">Features:</Text>
-            <Text style="-fx-font-size: 24px; -fx-font-family: 'JetBrains Mono'">Themes</Text>
-            <Text style="-fx-font-size: 24px; -fx-font-family: 'JetBrains Mono'">Database connection</Text>
-            <Text style="-fx-font-size: 24px; -fx-font-family: 'JetBrains Mono'">Responsive UI</Text>
+            <Text style="-fx-font-size: 24px; -fx-font-family: 'JetBrains Mono' ; -fx-font-weight: bold" styleClass="ver">Features:</Text>
+            <Text style="-fx-font-size: 24px; -fx-font-family: 'JetBrains Mono'" styleClass="ver">Themes</Text>
+            <Text style="-fx-font-size: 24px; -fx-font-family: 'JetBrains Mono'" styleClass="ver">Database connection</Text>
+            <Text style="-fx-font-size: 24px; -fx-font-family: 'JetBrains Mono'" styleClass="ver">Responsive UI</Text>
 
             <Text style="-fx-font-size: 24px; -fx-font-family: 'JetBrains Mono'" styleClass="textAbout" text="Made by Adam Jabłoński, Marcin Węgrzyn" />
 
