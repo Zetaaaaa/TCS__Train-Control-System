@@ -1,16 +1,18 @@
 package org.po.model;
 
+import javafx.geometry.Pos;
+
 import java.util.ArrayList;
 
-public class Station implements Entity{
+public class Station extends Entity{
     private String city;
     private ArrayList<Neighbor> connections;
 
     public String getName() {
         return name;
     }
-    public String getPosition() {
-        return this.getCity();
+    public Position getPosition() {
+        return this.position;
     }
 
     public String getCity() {
@@ -21,8 +23,19 @@ public class Station implements Entity{
         return connections;
     }
 
-    public Station(String city, ArrayList<Neighbor> connections) {
+    public void addConnection(Station _neighbor) {
+        this.connections.add(new Neighbor(this, _neighbor));
+    }
+
+    public Station(String name, Position position,String city, ArrayList<Neighbor> connections) {
+        this.name = name;
+        this.position = position;
         this.city = city;
         this.connections = connections;
+    }
+
+    @Override
+    public String toString() {
+        return this.getName();
     }
 }

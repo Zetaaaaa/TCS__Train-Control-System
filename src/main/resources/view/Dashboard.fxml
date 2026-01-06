@@ -3,19 +3,19 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<StackPane prefHeight="400.0" prefWidth="600.0" styleClass="trainMap" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1"
-fx:controller="org.po.controller.DashboardControler">
+<StackPane  prefHeight="400.0" prefWidth="600.0" styleClass="trainMap" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.po.controller.DashboardControler">
+   <Pane prefHeight="200.0" prefWidth="200.0" fx:id="mapContainer"/>
 
     <!-- Centered title -->
     <Label style="-fx-font-size: 24px; -fx-font-weight: bold;" styleClass="labelDarkBG" text="Dashboard" StackPane.alignment="CENTER" />
 
     <!-- Top-right button -->
-    <HBox alignment="BOTTOM_RIGHT" prefWidth="100.0" translateX="200" fx:id="panelLayout">
+    <HBox fx:id="panelLayout" alignment="BOTTOM_RIGHT" prefWidth="100.0" translateX="200">
 
-        <Button alignment="BOTTOM_RIGHT" mnemonicParsing="false" prefWidth="60.0" styleClass="sideButton" text="Data" fx:id="showPanel" />
+        <Button fx:id="showPanel" alignment="BOTTOM_RIGHT" mnemonicParsing="false" prefWidth="60.0" styleClass="sideButton" text="Data" />
 
-        <VBox alignment="TOP_CENTER" prefWidth="200" styleClass="sidePanel" >
-            <Label style="-fx-font-size: 24px; -fx-font-weight: bold;" text="Map Settings" styleClass="labelText" StackPane.alignment="CENTER" />
+        <VBox alignment="TOP_CENTER" prefWidth="200" styleClass="sidePanel">
+            <Label style="-fx-font-size: 24px; -fx-font-weight: bold;" styleClass="labelText" text="Map Settings" StackPane.alignment="CENTER" />
         </VBox>
 
     </HBox>
