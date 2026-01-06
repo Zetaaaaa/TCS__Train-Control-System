@@ -1,101 +1,93 @@
+
+
+/*!* Root background and default text *!*/
 /*.root {*/
 /*    -fx-background-color: #2b2b2b;*/
-/*    -fx-text-fill: white;*/
+/*    -fx-text-fill: #f5f5f5;*/
+/*    -fx-font-family: "Segoe UI", sans-serif;*/
+/*}*/
+
+/*.textAbout{*/
+/*    -fx-fill: #dbf1eb;*/
 /*}*/
 
 
-/* Root background and default text */
-.root {
-    -fx-background-color: #2b2b2b;
-    -fx-text-fill: #f5f5f5;
-    -fx-font-family: "Segoe UI", sans-serif;
-}
+/*.ver{*/
+/*    -fx-fill: #a4a9b1;*/
+/*}*/
 
-.textAbout{
-    -fx-fill: #dbf1eb;
-}
-
-
-.ver{
-    -fx-fill: #a4a9b1;
-}
+/*!* Button base style *!*/
 /*.button {*/
-/*    -fx-background-color: #3c3f41;*/
-/*    -fx-text-fill: white;*/
+/*    -fx-background-color: #ffffff;*/
+/*    -fx-text-fill: #222222;*/
+/*    !*-fx-border-color: #cccccc;*!*/
+/*    -fx-border-radius: 5;*/
+/*    -fx-background-radius: 5;*/
+/*    -fx-padding: 5 15 5 15;*/
+/*    -fx-font-size: 14px;*/
+/*    -fx-cursor: hand;*/
+
+/*    !* Smooth transition using color interpolation *!*/
+/*    -fx-effect: innershadow(two-pass-box, rgba(0,0,0,0), 0, 0, 0, 0);*/
+/*    -fx-transition: all 0.2s ease-in-out;*/
+/*}*/
+
+/*.button:hover {*/
+/*    -fx-background-color: #d8e2e4;*/
+/*    -fx-text-fill: #ba5353;*/
+/*}*/
+
+/*.trainMap{*/
+/*    -fx-background-color: #2e332c;*/
+/*}*/
+
+/*.sidePanel,.dbBg{*/
+/*    -fx-background-color: #d6ead5;*/
+/*}*/
+
+/*.sideButton{*/
+/* -fx-end-margin: 10;*/
 /*}*/
 
 
-/* Button base style */
-.button {
-    -fx-background-color: #ffffff;
-    -fx-text-fill: #222222;
-    /*-fx-border-color: #cccccc;*/
-    -fx-border-radius: 5;
-    -fx-background-radius: 5;
-    -fx-padding: 5 15 5 15;
-    -fx-font-size: 14px;
-    -fx-cursor: hand;
+/*.labelDarkBG{*/
+/*    -fx-text-fill: #e6e3e3;*/
+/*}*/
 
-    /* Smooth transition using color interpolation */
-    -fx-effect: innershadow(two-pass-box, rgba(0,0,0,0), 0, 0, 0, 0);
-    -fx-transition: all 0.2s ease-in-out;
-}
+/*.labelText {*/
+/*    -fx-text-fill: #222222;*/
+/*}*/
+/*.toggle-button .graphic {*/
+/*    -fx-content-display: left; !* icon on left, text on right *!*/
+/*}*/
 
-.button:hover {
-    -fx-background-color: #d8e2e4;
-    -fx-text-fill: #ba5353;
-}
+/*.error{*/
+/*    -fx-text-fill: red;*/
+/*}*/
 
-.trainMap{
-    -fx-background-color: #2e332c;
-}
+/*.slide-button {*/
+/*    -fx-background-color: #555;*/
+/*    -fx-background-radius: 20;*/
+/*    -fx-text-fill: transparent;*/
+/*}*/
 
-.sidePanel,.dbBg{
-    -fx-background-color: #d6ead5;
-}
+/*.slide-button:selected {*/
+/*    -fx-background-color: #00BCD4;*/
+/*}*/
+/*!* Thumb styling using a pseudo-class *!*/
+/*.slide-button .thumb {*/
+/*    -fx-background-color: white;*/
+/*    -fx-background-radius: 20;*/
+/*    -fx-padding: 5;*/
+/*    -fx-translate-x: 0;*/
+/*    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 2, 0, 0, 2);*/
+/*}*/
 
-.sideButton{
- -fx-end-margin: 10;
+/*.slide-button:selected .thumb {*/
+/*    -fx-translate-x: 60; !* move thumb right when selected *!*/
+/*}*/
 
-}
 
-.labelDarkBG{
-    -fx-text-fill: #e6e3e3;
-}
-
-.labelText {
-    -fx-text-fill: #222222;
-}
-.toggle-button .graphic {
-    -fx-content-display: left; /* icon on left, text on right */
-}
-
-.error{
-    -fx-text-fill: red;
-}
-
-.slide-button {
-    -fx-background-color: #555;
-    -fx-background-radius: 20;
-    -fx-text-fill: transparent;
-}
-
-.slide-button:selected {
-    -fx-background-color: #00BCD4;
-}
-/* Thumb styling using a pseudo-class */
-.slide-button .thumb {
-    -fx-background-color: white;
-    -fx-background-radius: 20;
-    -fx-padding: 5;
-    -fx-translate-x: 0;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 2, 0, 0, 2);
-}
-
-.slide-button:selected .thumb {
-    -fx-translate-x: 60; /* move thumb right when selected */
-}
-
-.test{
-    -fx-text-fill: #282853;
-}
+/*.textDarkBG{*/
+/*    -fx-fill: red;*/
+/*}*/

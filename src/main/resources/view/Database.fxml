@@ -1,31 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-
 <?import javafx.scene.text.Text?>
-<StackPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.po.controller.DatabaseControler">
-    <Label translateX="10" StackPane.alignment="TOP_LEFT" text="Database status: " fx:id="dbStatus"/>
-<VBox alignment="TOP_CENTER">
 
-        <HBox alignment="CENTER" maxHeight="30" prefHeight="50" prefWidth="150" spacing="20" style="-fx-start-margin: 90; -fx-padding: 20" StackPane.alignment="CENTER">
-            <Label styleClass="labelDarkBG" text="Select table :" fx:id="tableSelectLabel" /> <ComboBox fx:id="tableSelect" />
+<VBox prefHeight="600.0" prefWidth="900.0" spacing="0"
+      styleClass="db-main-container"
+      xmlns="http://javafx.com/javafx/17.0.12"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="org.po.controller.DatabaseControler">
+
+    <HBox alignment="CENTER_LEFT" spacing="20" styleClass="db-header">
+        <padding>
+            <Insets top="15" right="20" bottom="15" left="20" />
+        </padding>
+
+        <Label fx:id="dbStatus" text="Database status: " styleClass="status-label"/>
+
+        <Region HBox.hgrow="ALWAYS" />
+
+        <HBox alignment="CENTER" spacing="10">
+            <Label text="Active Table:" styleClass="text-subtle"/>
+            <ComboBox fx:id="tableSelect" promptText="Select table..." styleClass="combo-primary" />
         </HBox>
+    </HBox>
 
+    <BorderPane fx:id="borderPane" VBox.vgrow="ALWAYS" styleClass="db-content-area">
+        <left>
+            <TitledPane animated="false" collapsible="false" maxHeight="Infinity"
+                        prefWidth="280.0" text="Table Actions" styleClass="sidePanel">
+                <VBox spacing="15">
+                    <padding>
+                        <Insets top="15" right="15" bottom="15" left="15" />
+                    </padding>
 
-        <BorderPane fx:id="borderPane" maxHeight="800" maxWidth="2000" prefHeight="488.0" prefWidth="849.0" styleClass="dbBg" VBox.vgrow="ALWAYS">
-         <left>
-                <TitledPane maxHeight="Infinity" prefHeight="200.0" prefWidth="250.0"  styleClass="sidePanel" text="Table actions" fx:id="dataPane" >
-                    <VBox alignment="TOP_CENTER" spacing="10">
-                        <HBox spacing="10">
-                            <Text textAlignment="CENTER" text="Select table action: "/> <ComboBox fx:id="tableAction" />
-                        </HBox>
-                        <Separator/>
-                        <VBox spacing="10" fx:id="formSpace">
-                        </VBox>
+                    <VBox spacing="8">
+                        <Text text="Select table action:" styleClass="text-main" />
+                        <ComboBox fx:id="tableAction" maxWidth="Infinity" />
                     </VBox>
-                </TitledPane>
-         </left>
-        </BorderPane>
+
+                    <Separator />
+
+                    <VBox fx:id="formSpace" spacing="12" VBox.vgrow="ALWAYS">
+                    </VBox>
+                </VBox>
+            </TitledPane>
+        </left>
+
+        <center>
+            <StackPane styleClass="data-view-placeholder">
+                <Label text="Table data will appear here" styleClass="text-subtle"/>
+            </StackPane>
+        </center>
+    </BorderPane>
 </VBox>
-</StackPane>

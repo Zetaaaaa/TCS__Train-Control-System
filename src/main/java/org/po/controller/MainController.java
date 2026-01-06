@@ -68,7 +68,7 @@ public class MainController {
     private void route(String path) throws IOException, SQLException {
         System.out.println( "/view/"+path + ".fxml");
         FXMLLoader loader  = new FXMLLoader((Objects.requireNonNull(getClass().getResource( "/view/"+path + ".fxml"))));
-        StackPane pane = loader.load();
+        Pane pane = loader.load();
 
         Object controller = loader.getController();
 
@@ -119,7 +119,7 @@ public class MainController {
             Platform.runLater(() -> {
                 Scene scene = themeChange.getScene();
                 if (scene != null) {
-                    scene.getStylesheets().add(getClass().getResource("/css/light.css").toExternalForm());
+                    scene.getStylesheets().add(getClass().getResource("/css/newLight.css").toExternalForm());
                 }
             });
 
@@ -140,11 +140,11 @@ public class MainController {
                     scene.getStylesheets().clear();
 
                     if (darkTheme) {
-                        scene.getStylesheets().add(getClass().getResource("/css/light.css").toExternalForm());
+                        scene.getStylesheets().add(getClass().getResource("/css/newLight.css").toExternalForm());
                         darkTheme = false;
                         iconView.setImage(sunIcon);
                     } else {
-                        scene.getStylesheets().add(getClass().getResource("/css/dark.css").toExternalForm());
+                        scene.getStylesheets().add(getClass().getResource("/css/newDark.css").toExternalForm());
                         darkTheme = true;
                         iconView.setImage(moonIcon);
                     }

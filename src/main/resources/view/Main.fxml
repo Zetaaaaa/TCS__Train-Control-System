@@ -8,31 +8,31 @@
 <!--            prefHeight="400.0" prefWidth="600.0">-->
 <!--</AnchorPane>-->
 
-<BorderPane prefHeight="400" prefWidth="600" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.po.controller.MainController">
-   <top>
+<?import javafx.geometry.Insets?>
+<BorderPane prefHeight="600" prefWidth="900" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.po.controller.MainController">
+    <top>
+        <VBox styleClass="navbar-container">
+            <ToolBar styleClass="navbar">
+                <HBox alignment="CENTER_LEFT" spacing="10" HBox.hgrow="ALWAYS">
+                    <padding>
+                        <Insets left="10" right="10" />
+                    </padding>
 
-       <ToolBar>
-           <Button fx:id="Main" text="Home" />
-           <Button fx:id="Database" text="Database" />
-           <Button fx:id="Settings" text="Settings" />
-           <Button fx:id="About" text="About" />
+                    <Button fx:id="Main" text="Home" styleClass="nav-button" />
+                    <Button fx:id="Database" text="Database" styleClass="nav-button" />
+                    <Button fx:id="Settings" text="Settings" styleClass="nav-button" />
+                    <Button fx:id="About" text="About" styleClass="nav-button" />
 
-           <!-- Spacer to push the next button to the right -->
-           <Region HBox.hgrow="ALWAYS" />
+                    <Region HBox.hgrow="ALWAYS" />
 
-           <Button fx:id="themeChange"
-                   prefHeight="25.0"
-                   prefWidth="40.0"
-                   styleClass="slide-button"
-                   textAlignment="CENTER" />
-       </ToolBar>
-
-
-
-   </top>
-
+                    <Button fx:id="themeChange" styleClass="theme-toggle-button"
+                            prefHeight="30.0" prefWidth="30.0" />
+                </HBox>
+            </ToolBar>
+        </VBox>
+    </top>
 
     <center>
-        <StackPane fx:id="contentPane" />
+        <StackPane fx:id="contentPane" styleClass="main-content-area" />
     </center>
 </BorderPane>

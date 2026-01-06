@@ -72,7 +72,7 @@ public class DashboardControler {
             System.out.println(rs.getString(1)+" "+rs.getString(2)+" "+rs.getString(3));
             stations.add(new Station(
                     rs.getString(2),
-                    new Position(rs.getInt(3)*8, rs.getInt(4)*8),
+                    new Position(100+rs.getInt(3)*8, 100+rs.getInt(4)*8),
                     rs.getString(2),new ArrayList<>()));
         }
 
@@ -175,14 +175,14 @@ public class DashboardControler {
     private void togglePanel() {
         TranslateTransition transition = new TranslateTransition(Duration.millis(200), panelLayout);
         if(!visible) {
-            transition.setByX(-200);
+            transition.setByX(-300);
             transition.setInterpolator(Interpolator.EASE_IN);
             transition.play();
             visible = true;
 
         }
         else {
-            transition.setByX(+200);
+            transition.setByX(+300);
             transition.setInterpolator(Interpolator.LINEAR);
             transition.play();
             visible =  false;

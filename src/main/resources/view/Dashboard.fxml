@@ -1,21 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.collections.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<StackPane  prefHeight="400.0" prefWidth="600.0" styleClass="trainMap" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.po.controller.DashboardControler">
-   <Pane prefHeight="200.0" prefWidth="200.0" fx:id="mapContainer"/>
+<StackPane prefHeight="400.0" prefWidth="600.0" styleClass="trainMap" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.po.controller.DashboardControler">
+   <Pane fx:id="mapContainer" prefHeight="200.0" prefWidth="200.0" />
 
     <!-- Centered title -->
-    <Label style="-fx-font-size: 24px; -fx-font-weight: bold;" styleClass="labelDarkBG" text="Dashboard" StackPane.alignment="CENTER"/>
+    <Label style="-fx-font-size: 24px; -fx-font-weight: bold;" styleClass="labelDarkBG" text="Dashboard" StackPane.alignment="CENTER" />
 
     <!-- Top-right button -->
-    <HBox fx:id="panelLayout" alignment="BOTTOM_RIGHT" prefWidth="100.0" translateX="200" pickOnBounds="false">
+    <HBox fx:id="panelLayout" alignment="BOTTOM_RIGHT" pickOnBounds="false" prefWidth="100.0" translateX="300">
 
-        <Button fx:id="showPanel" alignment="BOTTOM_RIGHT" mnemonicParsing="false" prefWidth="60.0" styleClass="sideButton" text="Data" />
+        <Button fx:id="showPanel" alignment="BOTTOM_RIGHT" mnemonicParsing="false" prefWidth="60.0"  text="Data" />
 
-        <VBox alignment="TOP_CENTER" prefWidth="200" styleClass="sidePanel">
-            <Label style="-fx-font-size: 24px; -fx-font-weight: bold;" styleClass="labelText" text="Map Settings" StackPane.alignment="CENTER" />
+        <VBox alignment="TOP_CENTER" prefWidth="300" styleClass="sidePanel">
+            <Label style="-fx-font-size: 24px; -fx-font-weight: bold;" styleClass="sideText" text="Map Settings" StackPane.alignment="CENTER" />
+
+         <ChoiceBox value="Select operation" styleClass="scrollSelect" prefWidth="150.0">
+             <items>
+                 <FXCollections fx:factory="observableArrayList">
+                     <String fx:value="Add station" />
+                     <String fx:value="Add neighbor" />
+                     <String fx:value="Add route" />
+                     <String fx:value="JavaScript" />
+                 </FXCollections>
+             </items>
+         </ChoiceBox>
         </VBox>
 
     </HBox>
