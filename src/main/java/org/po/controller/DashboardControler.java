@@ -37,24 +37,39 @@ public class DashboardControler {
 
     private Boolean visible = false;
 
+    private Database database;
 
-    @FXML
-    public void initialize() {
-        ArrayList<Station> stations = new ArrayList<>();
-        stations.add(new Station(
-                "Krakow Glowny",
-                new Position(50.0, 0.0),
-                "Krakow",new ArrayList<>()));
-        stations.add(new Station(
-                "Krakow Nowa Huta",
-                new Position(250.0, 20.0),
-                "Krakow",
-                new ArrayList<>()));
-        stations.add(new Station(
-                "Tarnow",
-                new Position(650.0, 100.0),
-                "Tarnow",
-                new ArrayList<>()));
+    private Connection connection;
+
+    private ArrayList<Station> stations = new ArrayList<>();
+
+    private void setConnection(Connection connection) {
+        this.connection = connection;
+    }
+
+    public void setDatabase(Database database) throws SQLException {
+        this.database = database;
+        initData(); // safe place
+    }
+
+    private void initData() throws SQLException {
+        System.out.println("dashboard controler init");
+        System.out.println(database);
+        database.initializeConnection();
+        System.out.println("connection");
+        System.out.println(database.getConnection());
+        setConnection(database.getConnection());
+        // Sample query
+        ResultSet rs = database.executeQuery(connection, "SELECT * FROM stations");
+
+        while (rs.next()) {
+            System.out.println(rs.getString(1)+" "+rs.getString(2)+" "+rs.getString(3));
+            stations.add(new Station(
+                    rs.getString(2),
+                    new Position(rs.getInt(3)*10, rs.getInt(4)*10),
+                    rs.getString(2),new ArrayList<>()));
+        }
+
 
         stations.get(0).addConnection(stations.get(1));
         stations.get(1).addConnection(stations.get(0));
@@ -68,7 +83,6 @@ public class DashboardControler {
             }
         }
 
-
         showPanel.setOnAction(event -> {
             showPanel.setMouseTransparent(true);
             togglePanel();
@@ -76,6 +90,26 @@ public class DashboardControler {
             pause.setOnFinished(e -> showPanel.setMouseTransparent(false));
             pause.play();
         });
+    }
+
+    @FXML
+    public void initialize() throws SQLException {
+//        ArrayList<Station> stations = new ArrayList<>();
+//        stations.add(new Station(
+//                "Krakow Glowny",
+//                new Position(50.0, 0.0),
+//                "Krakow",new ArrayList<>()));
+//        stations.add(new Station(
+//                "Krakow Nowa Huta",
+//                new Position(250.0, 20.0),
+//                "Krakow",
+//                new ArrayList<>()));
+//        stations.add(new Station(
+//                "Tarnow",
+//                new Position(650.0, 100.0),
+//                "Tarnow",
+//                new ArrayList<>()));
+
     }
 
     public void drawStationMarker(Station station, Pane container) {
