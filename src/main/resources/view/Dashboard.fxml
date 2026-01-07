@@ -9,9 +9,6 @@
 <StackPane prefHeight="400.0" prefWidth="600.0" styleClass="trainMap" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.po.controller.DashboardControler">
    <Pane fx:id="mapContainer" prefHeight="200.0" prefWidth="200.0" />
 
-    <!-- Centered title -->
-    <Label style="-fx-font-size: 24px; -fx-font-weight: bold;" styleClass="labelDarkBG" text="Dashboard" StackPane.alignment="CENTER" />
-
     <!-- Top-right button -->
     <HBox fx:id="panelLayout" alignment="BOTTOM_RIGHT" pickOnBounds="false" prefWidth="100.0" translateX="300">
 

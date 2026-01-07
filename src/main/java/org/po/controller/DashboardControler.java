@@ -8,16 +8,15 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PopupControl;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.util.Duration;
 
-import org.po.model.Database;
-import org.po.model.Neighbor;
-import org.po.model.Position;
-import org.po.model.Station;
+import org.po.model.*;
 
 import javafx.scene.shape.Line;
 import java.sql.Connection;
@@ -50,6 +49,8 @@ public class DashboardControler {
     private HashMap<Integer,Station> selected_stations = new HashMap<>();
 
     private ArrayList<Station> stations = new ArrayList<>();
+
+    private ArrayList<PassengerTrain> trains = new ArrayList<>();
 
     private void setConnection(Connection connection) {
         this.connection = connection;
@@ -85,7 +86,15 @@ public class DashboardControler {
             stations.get(rs2.getInt(1)-1).addConnection(stations.get(rs2.getInt(2)-1));
         }
 
+        ResultSet rs3 = database.executeQuery(connection, "SELECT `name`, `pos_x`, `pos_y`, `number`, `operator`, `speed`, `running`, `current_neighbor_id`, `neighbor_progress`, `current_station_id` FROM `trains` order by train_id");
 
+        while (rs3.next()) {
+            Train trainPassenger = TrainFactory.getTrain("passeNGER", rs3.getString(1), rs3.getString(5), rs3.getDouble(6), 450, true, false);
+            trainPassenger.initialize(rs3.getBoolean(7), stations.get(rs3.getInt(10)-1), new Neighbor(stations.get(rs3.getInt(10)-1), stations.get(rs3.getInt(8)-1)), rs3.getDouble(9));
+            trains.add((PassengerTrain) trainPassenger);
+        }
+
+        //Train trainPassenger = TrainFactory.getTrain("passeNGER","EIP123","IC",190,450,true,false);
         for (Station s : stations) {
             drawStationMarker(s, mapContainer);
         }
@@ -94,6 +103,11 @@ public class DashboardControler {
                 drawSingleConnection(s, n, mapContainer);
             }
         }
+
+        for (PassengerTrain t : trains) {
+            drawTrainMarker(t, mapContainer);
+        }
+
 
         showPanel.setOnAction(event -> {
             showPanel.setMouseTransparent(true);
@@ -109,6 +123,39 @@ public class DashboardControler {
 
     }
 
+
+    public void drawTrainMarker(PassengerTrain train, Pane container) {
+        // 1. Calculate Position
+        // If the train is between stations, we calculate the interpolation point
+        double startX = train.getCurrentStation().getPosition().getX();
+        double startY = train.getCurrentStation().getPosition().getY();
+        double endX = train.getNextNeighbor().getDestination().getPosition().getX();
+        double endY = train.getNextNeighbor().getDestination().getPosition().getY();
+
+        double progress = train.getNeighborProgress(); // Assuming 0.0 to 1.0
+
+        double currentX = startX + (endX - startX) * progress;
+        double currentY = startY + (endY - startY) * progress;
+
+        // 2. Create the Circle (Smaller than station markers)
+        Circle trainCircle = new Circle(8, Color.web("#e74c3c")); // Red color for trains
+        trainCircle.setStroke(Color.WHITE);
+        trainCircle.setStrokeWidth(2);
+
+        // 3. Position the Circle
+        trainCircle.setCenterX(currentX);
+        trainCircle.setCenterY(currentY);
+
+        // 4. Add Interactivity (Optional: shows train name on hover)
+        Tooltip tooltip = new Tooltip("Train: " + train.getName() + "\nOperator: " + train.getOperator());
+        Tooltip.install(trainCircle, tooltip);
+
+        trainCircle.setOnMouseEntered(e -> trainCircle.setRadius(10));
+        trainCircle.setOnMouseExited(e -> trainCircle.setRadius(8));
+
+        // 5. Add to container (on top of lines, but usually on top of stations)
+        container.getChildren().add(trainCircle);
+    }
     public void drawStationMarker(Station station, Pane container) {
         //!!!STYLING SHOULD BE REPLACED BY CSS CLASS AND BY STYLED IN CSS FILE!!!
         Label stationLabel = new Label(station.getName());

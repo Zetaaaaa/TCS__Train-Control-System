@@ -15,7 +15,7 @@ public class CargoTrain extends Train {
 
 
     private CargoTrain(CargoTrainBuilder builder) {
-        super(builder.number, builder.operator);
+        super(builder.number, builder.operator, builder.speed);
         this.currentConnection = builder.currentConnection;
         this.connectionProgress = builder.connectionProgress;
         this.currentStation = builder.currentStation;
@@ -29,6 +29,7 @@ public class CargoTrain extends Train {
         //required
         private String number;
         private String operator;
+        private Double speed;
         private int cargoCapacity;
 
         private Boolean requiresMaintenance = false;
@@ -41,9 +42,10 @@ public class CargoTrain extends Train {
 
 
 
-        public CargoTrainBuilder(String number, String operator) {
+        public CargoTrainBuilder(String number, String operator, double speed) {
             this.number = number;
             this.operator = operator;
+            this.speed = speed;
         }
 
         public CargoTrainBuilder setCargoCapacity(int cargoCapacity) {
@@ -100,7 +102,7 @@ public class CargoTrain extends Train {
     }
 
     @Override
-    public void initialize(Boolean isRunning, Station currentStation, double connectionProgress) {
+    public void initialize(Boolean isRunning, Station currentStation,Neighbor current_connection, double connectionProgress) {
 
     }
 }

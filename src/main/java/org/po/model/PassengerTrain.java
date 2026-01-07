@@ -6,15 +6,41 @@ public class PassengerTrain extends Train {
     private String number;
     private String operator;
     private Boolean running = false;
+
+    public String getOperator() {
+        return operator;
+    }
+
     private Neighbor current_connection;
     private double connection_progress;
     private Station current_station;
     private int passengerCapacity;
     private boolean hasDiningCart;
     private boolean requiresMaintenance;
+    private Position position = new Position(0,0);
+    public Position getPosition() {
+        return this.position;
+    }
+
+    public double getNeighborProgress() {
+        return connection_progress;
+    }
+
+    public String getName() {
+        return this.number;
+    }
+
+    public Station getCurrentStation() {
+        return this.current_station;
+    }
+
+    public Neighbor getNextNeighbor() {
+        return this.current_connection;
+    }
+
 
     public PassengerTrain(PassengerTrainBuilder builder){
-        super(builder.number, builder.operator);
+        super(builder.number, builder.operator, builder.speed);
 
         this.running = builder.running;
         this.current_connection = builder.current_connection;
@@ -26,11 +52,17 @@ public class PassengerTrain extends Train {
 
     }
 
+
+
     public static class PassengerTrainBuilder {
 
         private String number;
         private String operator;
-        private Boolean running;
+        private double speed;
+        private Boolean running = true;
+
+
+
         private Neighbor current_connection;
         private double connection_progress;
         private Station current_station;
@@ -38,9 +70,10 @@ public class PassengerTrain extends Train {
         private Boolean requiresMaintenance = false;
         private Boolean hasDiningCart = false;
 
-        public PassengerTrainBuilder(String number, String operator) {
+        public PassengerTrainBuilder(String number, String operator, double speed) {
             this.number = number;
             this.operator = operator;
+            this.speed = speed;
         }
 
         public PassengerTrainBuilder setPassengerCapacity(int capacity) {
@@ -95,7 +128,14 @@ public class PassengerTrain extends Train {
     }
 
     @Override
-    public void initialize(Boolean isRunning, Station currentStation, double connectionProgress) {
-
+    public void initialize(Boolean isRunning, Station currentStation, Neighbor current_connection, double connectionProgress) {
+        this.running = isRunning;
+        this.getPosition().setX(currentStation.getPosition().getX());
+        this.getPosition().setY(currentStation.getPosition().getY());
+        this.current_station = currentStation;
+        this.connection_progress = connectionProgress;
+        this.current_connection = current_connection;
     }
+
+
 }

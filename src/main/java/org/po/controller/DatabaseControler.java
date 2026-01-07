@@ -67,7 +67,7 @@ public class DatabaseControler {
     @FXML
     private Button exectuteQuery;
 
-    private final ArrayList<String> tableListNames = new ArrayList<>(List.of("stations","trains","rides","neighbors","routes"));
+    private final ArrayList<String> tableListNames = new ArrayList<>(List.of("stations","trains","rides","neighbors","routes","route_stops"));
 
     private final ArrayList<String> tableSqlOperations = new ArrayList<>(List.of("INSERT","DELETE","SELECT"));
 
