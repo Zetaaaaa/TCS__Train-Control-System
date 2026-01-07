@@ -24,10 +24,7 @@ import javafx.scene.shape.Line;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Hashtable;
-import java.util.List;
+import java.util.*;
 
 public class DashboardControler implements Listener {
 
@@ -58,6 +55,12 @@ public class DashboardControler implements Listener {
     private HashMap<Integer, List<Integer>> trainRoutesMap = new HashMap<>();
 
     private HashMap<Train, Integer> trainToIdMap = new HashMap<>();
+
+    private  MainController mainController;
+
+    public void setMainController(MainController mainController) {
+        this.mainController = mainController;
+    }
 
     private void setConnection(Connection connection) {
         this.connection = connection;
@@ -91,8 +94,6 @@ public class DashboardControler implements Listener {
             stations.get(rs2.getInt(1)-1).addConnection(stations.get(rs2.getInt(2)-1));
         }
 
-
-
         //Train trainPassenger = TrainFactory.getTrain("passeNGER","EIP123","IC",190,450,true,false);
         for (Station s : stations) {
             drawStationMarker(s, mapContainer);
@@ -110,11 +111,13 @@ public class DashboardControler implements Listener {
             trainPassenger.initialize(rs3.getBoolean(7), stations.get(rs3.getInt(10)-1), new Neighbor(stations.get(rs3.getInt(10)-1), stations.get(rs3.getInt(8)-1)), rs3.getDouble(9));
             Circle circle = drawTrainMarker(trainPassenger, mapContainer);
 
-
             trainPassenger.addListener(this);
             trainPassenger.start();
             trains.put(trainPassenger,circle);
             trainToIdMap.put(trainPassenger, trainCounter);
+
+            mainController.addTrainThread(trainPassenger);
+
             trainCounter++;
 
         }
@@ -308,6 +311,15 @@ public class DashboardControler implements Listener {
     public void update() {
         System.out.println("update");
         Platform.runLater(this::moveTrainmarker);
+    }
+
+    public void clearThreads() {
+        Set<Thread> threadSet = Thread.getAllStackTraces().keySet();
+        for (Thread t : threadSet) {
+            System.out.println("clear thread: " + t.getName());
+//            t.interrupt();
+        }
+
     }
 
     private void moveTrainmarker() {

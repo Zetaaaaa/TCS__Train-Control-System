@@ -19,11 +19,14 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.po.model.Database;
+import org.po.model.Train;
 
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Objects;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class MainController {
 
@@ -42,6 +45,9 @@ public class MainController {
 
     @FXML
     private Button themeChange;
+
+    private final Set<Train> trainsThreadSet = ConcurrentHashMap.newKeySet();
+
 
     Database database;
     Connection connection;
@@ -66,6 +72,7 @@ public class MainController {
 
     @FXML
     private void route(String path) throws IOException, SQLException {
+        clearOldTrains(trainsThreadSet);
         System.out.println( "/view/"+path + ".fxml");
         FXMLLoader loader  = new FXMLLoader((Objects.requireNonNull(getClass().getResource( "/view/"+path + ".fxml"))));
         Pane pane = loader.load();
@@ -73,6 +80,7 @@ public class MainController {
         Object controller = loader.getController();
 
         if (controller instanceof DashboardControler d) {
+            d.setMainController(this);
             d.setDatabase(database);
         }
 
@@ -80,10 +88,6 @@ public class MainController {
             DatabaseControler dbController = loader.getController();
             dbController.setDatabase(getDatabase());
         }
-//        else if(Objects.equals(path, "Dashboard")){
-//            DashboardControler dashboardControler = loader.getController();
-//            dashboardControler.setDatabase(getDatabase());
-//        }
 
         contentPane.getChildren().setAll(pane); // replace current center content
     }
@@ -91,7 +95,6 @@ public class MainController {
     @FXML
     private void initialize() throws SQLException {
 
-        // ✅ Safe to create Database here
         database = new Database();
         setDatabase(database);
 
@@ -160,8 +163,6 @@ public class MainController {
             });
 
 
-
-
             Main.setOnAction(event -> {
                 try {
                     route("Dashboard");
@@ -210,5 +211,22 @@ public class MainController {
                 }
             });
         }
+
+    public void addTrainThread(Train train) {
+        trainsThreadSet.add(train);
     }
+
+    public void clearOldTrains(Set<Train> trains){
+        System.out.println("STOP");
+
+
+            trains.forEach(train -> {
+                //update table before closing all
+                //updateTrainPosition(connection,train)
+                train.stopTrain();
+            });
+            trains.clear();
+        }
+    }
+
 
