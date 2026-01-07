@@ -6,13 +6,14 @@ public class CargoTrain extends Train {
     private String number;
     private String operator;
     private Boolean running = false;
+
     private Neighbor currentConnection;
     private double connectionProgress;
     private Station currentStation;
     private int cargoCapacity;
-    private Boolean hasDiningCart;
-    private Boolean requiresMaintenance;
-
+    private boolean hasDiningCart;
+    private boolean requiresMaintenance;
+    private Position position = new Position(0,0);
 
     private CargoTrain(CargoTrainBuilder builder) {
         super(builder.number, builder.operator, builder.speed);
@@ -40,8 +41,6 @@ public class CargoTrain extends Train {
         private double connectionProgress;
         private Station currentStation;
 
-
-
         public CargoTrainBuilder(String number, String operator, double speed) {
             this.number = number;
             this.operator = operator;
@@ -63,7 +62,6 @@ public class CargoTrain extends Train {
             return this;
         }
 
-
         public CargoTrain build(){
             if(number == null || operator == null){
                 throw new IllegalArgumentException("Cargotrain number or operator is null");
@@ -76,15 +74,7 @@ public class CargoTrain extends Train {
     }
 
     @Override
-    public void start() {
-        if(!this.running){
-            this.running = true;
-        }
-
-    }
-
-    @Override
-    public void stop() {
+    public void stopTrain() {
         if(this.running){
             this.running = false;
         }
@@ -104,5 +94,36 @@ public class CargoTrain extends Train {
     @Override
     public void initialize(Boolean isRunning, Station currentStation,Neighbor current_connection, double connectionProgress) {
 
+    }
+
+    public String getOperator() {
+        return operator;
+    }
+
+    public double getNeighborProgress() {
+        return connectionProgress;
+    }
+
+    public String getTrainName() {
+        return this.number;
+    }
+
+    public Station getCurrentStation() {
+        return this.currentStation;
+    }
+
+    public Neighbor getNextNeighbor() {
+        return this.currentConnection;
+    }
+
+    @Override
+    public void startTrain() {
+
+    }
+
+    @Override
+    public void run() {
+        System.out.println("CargoTrain started");
+        super.run();
     }
 }
