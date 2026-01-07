@@ -275,12 +275,33 @@ public class DashboardControler implements Listener {
 
     @Override
     public void update() {
-        Platform.runLater(() -> {
-            moveTrainmarker();
-        });
+        System.out.println("update");
+        Platform.runLater(this::moveTrainmarker);
     }
 
-    private void moveTrainmarker(){
-        System.out.println("moveMarker");
+    private void moveTrainmarker() {
+        trains.forEach((train, circle) -> {
+            double progress = train.getNeighborProgress();
+            progress += 0.1;
+            System.out.println("progress: " + progress);
+            if (progress > 1.0) {
+                progress = 1.0;
+            }
+
+            train.setNeighborProgress(progress);
+
+            double startX = train.getCurrentStation().getPosition().getX();
+            double startY = train.getCurrentStation().getPosition().getY();
+            double endX = train.getNextNeighbor().getDestination().getPosition().getX();
+            double endY = train.getNextNeighbor().getDestination().getPosition().getY();
+
+
+            double currentX = startX + (endX - startX) * progress;
+            double currentY = startY + (endY - startY) * progress;
+
+
+            circle.setCenterX(currentX);
+            circle.setCenterY(currentY);
+        });
     }
 }

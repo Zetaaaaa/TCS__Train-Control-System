@@ -79,7 +79,10 @@ public class CargoTrain extends Train {
             this.running = false;
         }
     }
-
+    @Override
+    public void setNeighborProgress(double progress){
+        this.connectionProgress = progress;
+    }
     @Override
     public String getTrainData() {
         //zamiast super.cos mozna wywalic konstruktor nadrzedny i zainicjalizować w tej klasie

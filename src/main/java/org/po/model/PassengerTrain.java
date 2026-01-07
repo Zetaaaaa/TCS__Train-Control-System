@@ -94,6 +94,11 @@ public class PassengerTrain extends Train {
     }
 
     @Override
+    public void setNeighborProgress(double progress){
+        this.connectionProgress = progress;
+    }
+
+    @Override
     public String getTrainData() {
         return "Number: " + super.number +"\n" +
                 "Operator: " + super.operator + "\n"+

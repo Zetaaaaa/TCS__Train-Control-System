@@ -18,6 +18,7 @@ public abstract class Train  extends Thread  {
     public abstract void removeListener(Listener listener);
 
     public abstract double getNeighborProgress();
+    public abstract void setNeighborProgress(double progress);
 
     public abstract String getOperator();
 
