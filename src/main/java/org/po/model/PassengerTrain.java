@@ -86,12 +86,6 @@ public class PassengerTrain extends Train {
         }
     }
 
-    @Override
-    public void stopTrain() {
-        if(this.running){
-            this.running = false;
-        }
-    }
 
     @Override
     public void setCurrentStation(Station station){
@@ -157,20 +151,32 @@ public class PassengerTrain extends Train {
 
     }
 
+    public void stopTrain() {
+        running = false;
+        interrupt();
+    }
+
     @Override
     public void run() {
-        while(!Thread.currentThread().isInterrupted()){
+        while (running && !isInterrupted()) {
             try {
-
-                setPosition(new Position(getPosition().getX()+10,getPosition().getY()+10));
-                Thread.sleep(250);
-                notifyListeners();
-
+                progress(); // sleep or wait
             } catch (InterruptedException e) {
-                throw new RuntimeException(e);
+                // Thread was interrupted -> exit gracefully
+                running = false; // optional: ensure loop stops
+                Thread.currentThread().interrupt(); // preserve interrupt status
+                break; // exit loop
             }
         }
 
+        // optional cleanup
+        System.out.println("Train thread has been stopped");
+    }
+
+    public void progress() throws InterruptedException {
+        setPosition(new Position(getPosition().getX()+10,getPosition().getY()+10));
+        Thread.sleep(250);
+        notifyListeners();
     }
 
     public void addListener(Listener listener) {
