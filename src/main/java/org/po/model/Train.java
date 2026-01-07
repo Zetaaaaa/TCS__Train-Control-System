@@ -1,20 +1,35 @@
 package org.po.model;
 
-public abstract class Train {
+public abstract class Train  extends Thread  {
 
     public String number;
     public String operator;
     public double speed;
 
-    public Train(String number, String operator, double speed) {
+    public Train(String number, String operator, double speed){
         this.number = number;
         this.operator = operator;
         this.speed = speed;
     }
 
-    public abstract void start();
 
-    public abstract void stop();
+    public abstract void addListener(Listener listener);
+
+    public abstract void removeListener(Listener listener);
+
+    public abstract double getNeighborProgress();
+
+    public abstract String getOperator();
+
+    public abstract String getTrainName();
+
+    public abstract Station getCurrentStation();
+
+    public abstract Neighbor getNextNeighbor();
+
+    public abstract void startTrain();
+
+    public abstract void stopTrain();
 
     public abstract String getTrainData();
 

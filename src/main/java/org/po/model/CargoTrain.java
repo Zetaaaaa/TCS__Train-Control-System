@@ -100,6 +100,16 @@ public class CargoTrain extends Train {
         return operator;
     }
 
+    @Override
+    public void addListener(Listener listener) {
+
+    }
+
+    @Override
+    public void removeListener(Listener listener) {
+
+    }
+
     public double getNeighborProgress() {
         return connectionProgress;
     }
