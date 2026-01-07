@@ -50,7 +50,8 @@ public class DashboardControler {
 
     private ArrayList<Station> stations = new ArrayList<>();
 
-    private ArrayList<PassengerTrain> trains = new ArrayList<>();
+    private HashMap<Train, Circle> trains = new HashMap<>();
+
 
     private void setConnection(Connection connection) {
         this.connection = connection;
@@ -62,17 +63,15 @@ public class DashboardControler {
     }
 
     private void initData() throws SQLException {
-        System.out.println("dashboard controler init");
-        System.out.println(database);
+
         database.initializeConnection();
-        System.out.println("connection");
-        System.out.println(database.getConnection());
+
         setConnection(database.getConnection());
         // Sample query
         ResultSet rs = database.executeQuery(connection, "SELECT * FROM stations order by station_id");
 
         while (rs.next()) {
-            System.out.println(rs.getString(1)+" "+rs.getString(2)+" "+rs.getString(3));
+//            System.out.println(rs.getString(1)+" "+rs.getString(2)+" "+rs.getString(3));
             stations.add(new Station(
                     rs.getString(2),
                     new Position(100+rs.getInt(3)*8, 100+rs.getInt(4)*8),
@@ -82,17 +81,11 @@ public class DashboardControler {
         ResultSet rs2 = database.executeQuery(connection, "SELECT station_id, destination_id  FROM neighbors order by station_id");
 
         while (rs2.next()) {
-            System.out.println(rs2.getString(1)+" "+rs2.getString(2));
+//            System.out.println(rs2.getString(1)+" "+rs2.getString(2));
             stations.get(rs2.getInt(1)-1).addConnection(stations.get(rs2.getInt(2)-1));
         }
 
-        ResultSet rs3 = database.executeQuery(connection, "SELECT `name`, `pos_x`, `pos_y`, `number`, `operator`, `speed`, `running`, `current_neighbor_id`, `neighbor_progress`, `current_station_id` FROM `trains` order by train_id");
 
-        while (rs3.next()) {
-            Train trainPassenger = TrainFactory.getTrain("passeNGER", rs3.getString(1), rs3.getString(5), rs3.getDouble(6), 450, true, false);
-            trainPassenger.initialize(rs3.getBoolean(7), stations.get(rs3.getInt(10)-1), new Neighbor(stations.get(rs3.getInt(10)-1), stations.get(rs3.getInt(8)-1)), rs3.getDouble(9));
-            trains.add((PassengerTrain) trainPassenger);
-        }
 
         //Train trainPassenger = TrainFactory.getTrain("passeNGER","EIP123","IC",190,450,true,false);
         for (Station s : stations) {
@@ -104,8 +97,13 @@ public class DashboardControler {
             }
         }
 
-        for (PassengerTrain t : trains) {
-            drawTrainMarker(t, mapContainer);
+        ResultSet rs3 = database.executeQuery(connection, "SELECT `name`, `pos_x`, `pos_y`, `number`, `operator`, `speed`, `running`, `current_neighbor_id`, `neighbor_progress`, `current_station_id` FROM `trains` order by train_id");
+
+        while (rs3.next()) {
+            Train trainPassenger = TrainFactory.getTrain("passeNGER", rs3.getString(1), rs3.getString(5), rs3.getDouble(6), 450, true, false);
+            trainPassenger.initialize(rs3.getBoolean(7), stations.get(rs3.getInt(10)-1), new Neighbor(stations.get(rs3.getInt(10)-1), stations.get(rs3.getInt(8)-1)), rs3.getDouble(9));
+            Circle circle = drawTrainMarker(trainPassenger, mapContainer);
+            trains.put(trainPassenger,circle);
         }
 
 
@@ -123,8 +121,7 @@ public class DashboardControler {
 
     }
 
-
-    public void drawTrainMarker(PassengerTrain train, Pane container) {
+    public Circle drawTrainMarker(Train train, Pane container) {
         // 1. Calculate Position
         // If the train is between stations, we calculate the interpolation point
         double startX = train.getCurrentStation().getPosition().getX();
@@ -141,7 +138,9 @@ public class DashboardControler {
         Circle trainCircle = new Circle(8, Color.web("#e74c3c")); // Red color for trains
         trainCircle.setStroke(Color.WHITE);
         trainCircle.setStrokeWidth(2);
+        trainCircle.setScaleZ(-10);
 
+        System.out.println(currentX+" "+currentY);
         // 3. Position the Circle
         trainCircle.setCenterX(currentX);
         trainCircle.setCenterY(currentY);
@@ -153,11 +152,21 @@ public class DashboardControler {
         trainCircle.setOnMouseEntered(e -> trainCircle.setRadius(10));
         trainCircle.setOnMouseExited(e -> trainCircle.setRadius(8));
 
+        //train click
+//        trainCircle.setPickOnBounds(false);
+//        trainCircle.setOnMouseClicked(e -> {
+//            System.out.println("Dot clicked");
+//            e.consume(); // remove this if blocks should ALSO receive click
+//        });
+
         // 5. Add to container (on top of lines, but usually on top of stations)
+
         container.getChildren().add(trainCircle);
+
+        return trainCircle;
     }
     public void drawStationMarker(Station station, Pane container) {
-        //!!!STYLING SHOULD BE REPLACED BY CSS CLASS AND BY STYLED IN CSS FILE!!!
+        //!!!STYLING SHOULD BE REPLACED BY CSS CLASS AND BY STYLED IN CSS FILE!!! - ok
         Label stationLabel = new Label(station.getName());
         stationLabel.setStyle("-fx-font-size: 10px;"+"-fx-font-weight: bold;"+"-fx-text-fill: white;");
         stationLabel.getStyleClass().add("labelText");
@@ -205,7 +214,7 @@ public class DashboardControler {
             boolean prev_select = select_mult;
             select_mult = event.isShiftDown();
             if (prev_select != select_mult) {selected_stations.clear();}
-            if(select_mult==false){
+            if(!select_mult){
                 if(selected_stations!=null){
                 selected_stations.clear();
                 selected_stations.put(stations.indexOf(station),station);
@@ -216,8 +225,6 @@ public class DashboardControler {
                 selected_stations.put(stations.indexOf(station),station);
                 System.out.println(selected_stations.values());
             }
-
-
             //handleStationClick(station);
         });
         stationBox.setOnMouseEntered(e -> stationBox.setStyle(stationBox.getStyle() + "-fx-background-color: #9e9e9e;"));
