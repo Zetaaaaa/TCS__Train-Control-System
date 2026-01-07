@@ -15,6 +15,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import org.po.model.*;
@@ -54,6 +55,9 @@ public class DashboardControler implements Listener {
 
     private HashMap<Train, Circle> trains = new HashMap<>();
 
+    private HashMap<Integer, List<Integer>> trainRoutesMap = new HashMap<>();
+
+    private HashMap<Train, Integer> trainToIdMap = new HashMap<>();
 
     private void setConnection(Connection connection) {
         this.connection = connection;
@@ -98,7 +102,7 @@ public class DashboardControler implements Listener {
                 drawSingleConnection(s, n, mapContainer);
             }
         }
-
+        int trainCounter = 1;
         ResultSet rs3 = database.executeQuery(connection, "SELECT `name`, `pos_x`, `pos_y`, `number`, `operator`, `speed`, `running`, `current_neighbor_id`, `neighbor_progress`, `current_station_id` FROM `trains` order by train_id");
 
         while (rs3.next()) {
@@ -106,12 +110,16 @@ public class DashboardControler implements Listener {
             trainPassenger.initialize(rs3.getBoolean(7), stations.get(rs3.getInt(10)-1), new Neighbor(stations.get(rs3.getInt(10)-1), stations.get(rs3.getInt(8)-1)), rs3.getDouble(9));
             Circle circle = drawTrainMarker(trainPassenger, mapContainer);
 
+
             trainPassenger.addListener(this);
             trainPassenger.start();
             trains.put(trainPassenger,circle);
+            trainToIdMap.put(trainPassenger, trainCounter);
+            trainCounter++;
 
         }
 
+        trainRoutesMap = getTrainRoutes();
 
         showPanel.setOnAction(event -> {
             showPanel.setMouseTransparent(true);
@@ -125,6 +133,29 @@ public class DashboardControler implements Listener {
     @FXML
     public void initialize() throws SQLException {
 
+    }
+    private HashMap<Integer, List<Integer>> getTrainRoutes() throws SQLException {
+        HashMap<Integer, List<Integer>> trainRoutesMap = new HashMap<>();
+
+        // SQL query to get train_id and all station_ids in the route order
+        String query =
+                "SELECT t.train_id, rs.station_id " +
+                        "FROM trains t " +
+                        "JOIN rides r ON t.train_id = r.train_id " +
+                        "JOIN route_stops rs ON r.route_id = rs.route_id " +
+                        "ORDER BY t.train_id, rs.stop_order ASC";
+
+        try (ResultSet rs = database.executeQuery(connection, query)) {
+            while (rs.next()) {
+                int trainId = rs.getInt("train_id");
+                int stationId = rs.getInt("station_id");
+
+                // If the trainId isn't in the map yet, create a new list
+                trainRoutesMap.computeIfAbsent(trainId, k -> new ArrayList<>()).add(stationId);
+            }
+        }
+
+        return trainRoutesMap;
     }
 
     public Circle drawTrainMarker(Train train, Pane container) {
@@ -282,10 +313,39 @@ public class DashboardControler implements Listener {
     private void moveTrainmarker() {
         trains.forEach((train, circle) -> {
             double progress = train.getNeighborProgress();
-            progress += 0.1;
-            System.out.println("progress: " + progress);
-            if (progress > 1.0) {
-                progress = 1.0;
+            progress += train.speed / train.getNextNeighbor().getDistance();
+
+            if (progress >= 1.0) {
+                progress = 0;
+
+                Integer trainId = trainToIdMap.get(train);
+                List<Integer> route = trainRoutesMap.get(trainId);
+
+                if (route != null && !route.isEmpty()) {
+                    int currentStationId = -1;
+                    for (int i = 0; i < stations.size(); i++) {
+                        if (stations.get(i).getName().equals(train.getNextNeighbor().getDestination().getName())) {
+                            currentStationId = i + 1;
+                            break;
+                        }
+                    }
+
+                    int currentIndexInRoute = route.indexOf(currentStationId);
+
+                    if (currentIndexInRoute == route.size() - 1) {
+                        java.util.Collections.reverse(route);
+                        currentIndexInRoute = 0; // The old "end" is now the "start"
+                        System.out.println("Train " + train.getTrainName() + " reversing route.");
+                    }
+
+                    int nextStationId = route.get(currentIndexInRoute + 1);
+
+                    Station reachedStation = stations.get(currentStationId - 1);
+                    Station nextStation = stations.get(nextStationId - 1);
+
+                    train.setCurrentStation(reachedStation);
+                    train.setNextNeighbor(new Neighbor(reachedStation, nextStation));
+                }
             }
 
             train.setNeighborProgress(progress);
@@ -295,10 +355,8 @@ public class DashboardControler implements Listener {
             double endX = train.getNextNeighbor().getDestination().getPosition().getX();
             double endY = train.getNextNeighbor().getDestination().getPosition().getY();
 
-
             double currentX = startX + (endX - startX) * progress;
             double currentY = startY + (endY - startY) * progress;
-
 
             circle.setCenterX(currentX);
             circle.setCenterY(currentY);

@@ -80,6 +80,15 @@ public class CargoTrain extends Train {
         }
     }
     @Override
+    public void setCurrentStation(Station station){
+        this.currentStation=station;
+    }
+    @Override
+    public void setNextNeighbor(Neighbor neighbor){
+        this.currentConnection = neighbor;
+    }
+
+    @Override
     public void setNeighborProgress(double progress){
         this.connectionProgress = progress;
     }

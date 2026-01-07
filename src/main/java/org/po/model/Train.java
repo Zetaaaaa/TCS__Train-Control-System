@@ -26,7 +26,11 @@ public abstract class Train  extends Thread  {
 
     public abstract Station getCurrentStation();
 
+    public abstract void setCurrentStation(Station station);
+
     public abstract Neighbor getNextNeighbor();
+
+    public abstract void setNextNeighbor(Neighbor neighbor);
 
     public abstract void startTrain();
 

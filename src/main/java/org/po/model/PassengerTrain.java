@@ -94,6 +94,15 @@ public class PassengerTrain extends Train {
     }
 
     @Override
+    public void setCurrentStation(Station station){
+        this.currentStation=station;
+    }
+    @Override
+    public void setNextNeighbor(Neighbor neighbor){
+        this.currentConnection = neighbor;
+    }
+
+    @Override
     public void setNeighborProgress(double progress){
         this.connectionProgress = progress;
     }
@@ -154,7 +163,7 @@ public class PassengerTrain extends Train {
             try {
 
                 setPosition(new Position(getPosition().getX()+10,getPosition().getY()+10));
-                Thread.sleep(1000);
+                Thread.sleep(250);
                 notifyListeners();
 
             } catch (InterruptedException e) {
