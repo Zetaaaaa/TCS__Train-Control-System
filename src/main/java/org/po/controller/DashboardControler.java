@@ -3,6 +3,7 @@ package org.po.controller;
 import javafx.animation.Interpolator;
 import javafx.animation.PauseTransition;
 import javafx.animation.TranslateTransition;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
@@ -27,7 +28,8 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
 
-public class DashboardControler {
+public class DashboardControler implements Listener {
+
 
     @FXML
     private Pane mapContainer;
@@ -103,7 +105,11 @@ public class DashboardControler {
             Train trainPassenger = TrainFactory.getTrain("passeNGER", rs3.getString(1), rs3.getString(5), rs3.getDouble(6), 450, true, false);
             trainPassenger.initialize(rs3.getBoolean(7), stations.get(rs3.getInt(10)-1), new Neighbor(stations.get(rs3.getInt(10)-1), stations.get(rs3.getInt(8)-1)), rs3.getDouble(9));
             Circle circle = drawTrainMarker(trainPassenger, mapContainer);
+
+            trainPassenger.addListener(this);
+            trainPassenger.start();
             trains.put(trainPassenger,circle);
+
         }
 
 
@@ -146,7 +152,7 @@ public class DashboardControler {
         trainCircle.setCenterY(currentY);
 
         // 4. Add Interactivity (Optional: shows train name on hover)
-        Tooltip tooltip = new Tooltip("Train: " + train.getName() + "\nOperator: " + train.getOperator());
+        Tooltip tooltip = new Tooltip("Train: " + train.getTrainName() + "\nOperator: " + train.getOperator());
         Tooltip.install(trainCircle, tooltip);
 
         trainCircle.setOnMouseEntered(e -> trainCircle.setRadius(10));
@@ -258,7 +264,6 @@ public class DashboardControler {
             transition.setInterpolator(Interpolator.EASE_IN);
             transition.play();
             visible = true;
-
         }
         else {
             transition.setByX(+300);
@@ -266,5 +271,16 @@ public class DashboardControler {
             transition.play();
             visible =  false;
         }
+    }
+
+    @Override
+    public void update() {
+        Platform.runLater(() -> {
+            moveTrainmarker();
+        });
+    }
+
+    private void moveTrainmarker(){
+        System.out.println("moveMarker");
     }
 }
