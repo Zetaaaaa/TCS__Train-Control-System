@@ -1,11 +1,14 @@
 package org.po.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class PassengerTrain extends Train {
 
 
     private String number;
     private String operator;
-    private Boolean running = false;
+    private Boolean running;
 
     private Neighbor currentConnection;
     private double connectionProgress;
@@ -14,6 +17,8 @@ public class PassengerTrain extends Train {
     private boolean hasDiningCart;
     private boolean requiresMaintenance;
     private Position position = new Position(0,0);
+
+    private List<Listener> listeners = new ArrayList<>();
 
     public Position getPosition() {
         return this.position;
@@ -100,7 +105,8 @@ public class PassengerTrain extends Train {
 
     @Override
     public void initialize(Boolean isRunning, Station currentStation, Neighbor current_connection, double connectionProgress) {
-        this.running = isRunning;
+//        this.running = isRunning;
+        this.running = true;
         this.getPosition().setX(currentStation.getPosition().getX());
         this.getPosition().setY(currentStation.getPosition().getY());
         this.currentStation = currentStation;
@@ -128,6 +134,10 @@ public class PassengerTrain extends Train {
         return this.currentConnection;
     }
 
+    public void setPosition(Position position) {
+
+    }
+
     @Override
     public void startTrain() {
 
@@ -135,7 +145,31 @@ public class PassengerTrain extends Train {
 
     @Override
     public void run() {
-        System.out.println("PassengerTrain started");
-        super.run();
+        while(!Thread.currentThread().isInterrupted()){
+            try {
+
+                setPosition(new Position(getPosition().getX()+10,getPosition().getY()+10));
+                Thread.sleep(1000);
+                notifyListeners();
+
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+    }
+
+    public void addListener(Listener listener) {
+        listeners.add(listener);
+    }
+
+    public void removeListener(Listener listener) {
+        listeners.remove(listener);
+    }
+
+    private void notifyListeners() {
+        for (Listener listener : listeners) {
+            listener.update();
+        }
     }
 }
