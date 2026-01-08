@@ -112,7 +112,7 @@ public class PassengerTrain extends Train {
     }
 
     @Override
-    public void initialize(Boolean isRunning, Station currentStation, Neighbor current_connection, double connectionProgress) {
+    public void initialize(Boolean isRunning, Station currentStation, Neighbor current_connection, double connectionProgress, int train_id) {
 //        this.running = isRunning;
         this.running = true;
         this.getPosition().setX(currentStation.getPosition().getX());
@@ -120,6 +120,7 @@ public class PassengerTrain extends Train {
         this.currentStation = currentStation;
         this.connectionProgress = connectionProgress;
         this.currentConnection = current_connection;
+        this.train_id = train_id;
     }
 
     public String getOperator() {
@@ -174,8 +175,8 @@ public class PassengerTrain extends Train {
     }
 
     public void progress() throws InterruptedException {
-        setPosition(new Position(getPosition().getX()+10,getPosition().getY()+10));
-        Thread.sleep(250);
+        //setPosition(new Position(getPosition().getX()+10,getPosition().getY()+10));
+        Thread.sleep(1000);
         notifyListeners();
     }
 

@@ -105,6 +105,14 @@ public class MainController {
         }
         refreshFields();
 
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            try {
+                clearOldTrains(trainsThreadSet);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }));
+
     }
 
     private void refreshFields(){
@@ -216,13 +224,16 @@ public class MainController {
         trainsThreadSet.add(train);
     }
 
-    public void clearOldTrains(Set<Train> trains){
+    public void clearOldTrains(Set<Train> trains) throws SQLException {
         System.out.println("STOP");
-
+        database.initializeConnection();
+        setConnection(database.getConnection());
 
             trains.forEach(train -> {
-                //update table before closing all
-                //updateTrainPosition(connection,train)
+                try {
+                    String update_query = "UPDATE `trains` SET`pos_x`='"+train.getPosition().getX()+"',`pos_y`='"+train.getPosition().getY()+"',`current_neighbor_id`='"+Integer.valueOf(train.getCurrent_destination_id()+1)+"',`neighbor_progress`='"+train.getNeighborProgress()+"',`current_station_id`='"+Integer.valueOf(train.getCurrent_station_id()+1)+"' WHERE train_id="+train.getTrain_id();
+                    database.executeUpdate(connection, update_query);
+                }catch (SQLException e){}
                 train.stopTrain();
             });
             trains.clear();

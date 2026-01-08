@@ -54,7 +54,6 @@ public class DashboardControler implements Listener {
 
     private HashMap<Integer, List<Integer>> trainRoutesMap = new HashMap<>();
 
-    private HashMap<Train, Integer> trainToIdMap = new HashMap<>();
 
     private  MainController mainController;
 
@@ -104,21 +103,19 @@ public class DashboardControler implements Listener {
             }
         }
         int trainCounter = 1;
-        ResultSet rs3 = database.executeQuery(connection, "SELECT `name`, `pos_x`, `pos_y`, `number`, `operator`, `speed`, `running`, `current_neighbor_id`, `neighbor_progress`, `current_station_id` FROM `trains` order by train_id");
+        ResultSet rs3 = database.executeQuery(connection, "SELECT `name`, `pos_x`, `pos_y`, `number`, `operator`, `speed`, `running`, `current_neighbor_id`, `neighbor_progress`, `current_station_id`, train_id FROM `trains` order by train_id");
 
         while (rs3.next()) {
             Train trainPassenger = TrainFactory.getTrain("passeNGER", rs3.getString(1), rs3.getString(5), rs3.getDouble(6), 450, true, false);
-            trainPassenger.initialize(rs3.getBoolean(7), stations.get(rs3.getInt(10)-1), new Neighbor(stations.get(rs3.getInt(10)-1), stations.get(rs3.getInt(8)-1)), rs3.getDouble(9));
+            trainPassenger.initialize(rs3.getBoolean(7), stations.get(rs3.getInt(10)-1), new Neighbor(stations.get(rs3.getInt(10)-1), stations.get(rs3.getInt(8)-1)), rs3.getDouble(9),rs3.getInt(11));
             Circle circle = drawTrainMarker(trainPassenger, mapContainer);
 
             trainPassenger.addListener(this);
             trainPassenger.start();
             trains.put(trainPassenger,circle);
-            trainToIdMap.put(trainPassenger, trainCounter);
 
             mainController.addTrainThread(trainPassenger);
 
-            trainCounter++;
 
         }
 
@@ -175,7 +172,13 @@ public class DashboardControler implements Listener {
         double currentY = startY + (endY - startY) * progress;
 
         // 2. Create the Circle (Smaller than station markers)
-        Circle trainCircle = new Circle(8, Color.web("#e74c3c")); // Red color for trains
+        long seed = train.train_id^2;
+        Random deterministicRandom = new Random(seed);
+        double red = deterministicRandom.nextDouble();
+        double green = deterministicRandom.nextDouble();
+        double blue = deterministicRandom.nextDouble();
+        Color trainColor = Color.color(red, green, blue);
+        Circle trainCircle = new Circle(8, trainColor); // Red color for trains
         trainCircle.setStroke(Color.WHITE);
         trainCircle.setStrokeWidth(2);
         trainCircle.setScaleZ(-10);
@@ -330,7 +333,7 @@ public class DashboardControler implements Listener {
             if (progress >= 1.0) {
                 progress = 0;
 
-                Integer trainId = trainToIdMap.get(train);
+                Integer trainId = train.getTrain_id();
                 List<Integer> route = trainRoutesMap.get(trainId);
 
                 if (route != null && !route.isEmpty()) {
@@ -345,18 +348,34 @@ public class DashboardControler implements Listener {
                     int currentIndexInRoute = route.indexOf(currentStationId);
 
                     if (currentIndexInRoute == route.size() - 1) {
-                        java.util.Collections.reverse(route);
-                        currentIndexInRoute = 0; // The old "end" is now the "start"
-                        System.out.println("Train " + train.getTrainName() + " reversing route.");
+                        int firstStationId = route.get(0);
+                        int secondStationId = route.get(1); // The destination after restarting
+
+                        Station firstStation = stations.get(firstStationId - 1);
+                        Station secondStation = stations.get(secondStationId - 1);
+
+                        // 2. Teleport the train: Set its current location to the start station
+                        train.setCurrent_station_id(firstStationId - 1);
+                        train.setCurrent_destination_id(secondStationId - 1);
+                        train.setCurrentStation(firstStation);
+                        train.setNextNeighbor(new Neighbor(firstStation, secondStation));
+
+                        // 3. Reset progress so it starts at the beginning of the new segment
+                        progress = 0;
+                        train.setNeighborProgress(0);
+
+                        System.out.println("Train " + train.getTrainName() + " teleported to start: " + firstStation.getName());
+                    } else {
+                        // Normal progression logic
+                        int nextStationId = route.get(currentIndexInRoute + 1);
+                        Station reachedStation = stations.get(currentStationId - 1);
+                        Station nextStation = stations.get(nextStationId - 1);
+
+                        train.setCurrent_station_id(stations.indexOf(reachedStation));
+                        train.setCurrent_destination_id(stations.indexOf(nextStation));
+                        train.setCurrentStation(reachedStation);
+                        train.setNextNeighbor(new Neighbor(reachedStation, nextStation));
                     }
-
-                    int nextStationId = route.get(currentIndexInRoute + 1);
-
-                    Station reachedStation = stations.get(currentStationId - 1);
-                    Station nextStation = stations.get(nextStationId - 1);
-
-                    train.setCurrentStation(reachedStation);
-                    train.setNextNeighbor(new Neighbor(reachedStation, nextStation));
                 }
             }
 

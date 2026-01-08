@@ -104,7 +104,7 @@ public class CargoTrain extends Train {
     }
 
     @Override
-    public void initialize(Boolean isRunning, Station currentStation,Neighbor current_connection, double connectionProgress) {
+    public void initialize(Boolean isRunning, Station currentStation,Neighbor current_connection, double connectionProgress, int train_id) {
 
     }
 
