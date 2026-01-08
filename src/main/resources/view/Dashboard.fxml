@@ -3,12 +3,15 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
+<?import javafx.scene.text.Text?>
 <StackPane prefHeight="400.0" prefWidth="600.0" styleClass="trainMap" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.po.controller.DashboardControler">
    <Pane fx:id="mapContainer" prefHeight="200.0" prefWidth="200.0" />
+    <TextField maxHeight="90" maxWidth="900" prefWidth="90" StackPane.alignment="TOP_LEFT" text="Wybrane stacje:" fx:id="selectedStationsText"/>
 
     <!-- Top-right button -->
     <HBox fx:id="panelLayout" alignment="BOTTOM_RIGHT" pickOnBounds="false" prefWidth="100.0" translateX="300">
 
+        <Button text="Add ride" fx:id="addNewRouteButton"/>
         <Button fx:id="showPanel" alignment="BOTTOM_RIGHT" mnemonicParsing="false" prefWidth="60.0" text="Data" />
 
         <VBox alignment="TOP_CENTER" prefWidth="300" styleClass="sidePanel">
