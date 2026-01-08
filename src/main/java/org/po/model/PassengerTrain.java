@@ -176,7 +176,7 @@ public class PassengerTrain extends Train {
 
     public void progress() throws InterruptedException {
         //setPosition(new Position(getPosition().getX()+10,getPosition().getY()+10));
-        Thread.sleep(1000);
+        Thread.sleep(50);
         notifyListeners();
     }
 

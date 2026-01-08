@@ -305,7 +305,7 @@ public class DashboardControler implements Listener {
     private void moveTrainmarker() {
         trains.forEach((train, circle) -> {
             double progress = train.getNeighborProgress();
-            progress += train.speed / train.getNextNeighbor().getDistance();
+            progress += train.speed*0.03 / train.getNextNeighbor().getDistance();
 
             if (progress >= 1.0) {
                 progress = 0;
