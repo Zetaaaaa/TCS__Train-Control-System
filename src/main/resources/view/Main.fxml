@@ -20,7 +20,7 @@
 
                     <Button fx:id="Main" text="Home" styleClass="nav-button" />
                     <Button fx:id="Database" text="Database" styleClass="nav-button" />
-                    <Button fx:id="Settings" text="Settings" styleClass="nav-button" />
+<!--                    <Button fx:id="Settings" text="Settings" styleClass="nav-button" />-->
                     <Button fx:id="About" text="About" styleClass="nav-button" />
 
                     <Region HBox.hgrow="ALWAYS" />

@@ -75,4 +75,5 @@ public abstract class Train  extends Thread  {
 //    nadaj kurs i ustaw startowe dane (np magazyn na płaszowie aby pociąg nie pojawiał się znikąd)
     public abstract void initialize(Boolean isRunning, Station currentStation,Neighbor current_connection, double connectionProgress, int train_id);
 
+
 }

@@ -12,6 +12,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -22,6 +23,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class DashboardControler implements Listener {
 
@@ -36,6 +38,12 @@ public class DashboardControler implements Listener {
     @FXML
     private HBox panelLayout;
 
+    @FXML
+    private TextField selectedStationsText;
+
+    @FXML
+    private Button addNewRouteButton;
+
     private Boolean visible = false;
 
     private Database database;
@@ -44,14 +52,14 @@ public class DashboardControler implements Listener {
 
     private boolean select_mult = false;
 
-    private HashMap<Integer,Station> selected_stations = new HashMap<>();
+    Map<Integer, Station> selected_stations = new LinkedHashMap<>();
+
 
     private ArrayList<Station> stations = new ArrayList<>();
 
     private HashMap<Train, Circle> trains = new HashMap<>();
 
     private HashMap<Integer, List<Integer>> trainRoutesMap = new HashMap<>();
-
 
     private  MainController mainController;
 
@@ -87,7 +95,6 @@ public class DashboardControler implements Listener {
         ResultSet rs2 = database.executeQuery(connection, "SELECT station_id, destination_id  FROM neighbors order by station_id");
 
         while (rs2.next()) {
-//            System.out.println(rs2.getString(1)+" "+rs2.getString(2));
             stations.get(rs2.getInt(1)-1).addConnection(stations.get(rs2.getInt(2)-1));
         }
 
@@ -113,11 +120,11 @@ public class DashboardControler implements Listener {
             trains.put(trainPassenger,circle);
 
             mainController.addTrainThread(trainPassenger);
-
-
         }
 
         trainRoutesMap = getTrainRoutes();
+
+        selectedStationsText.visibleProperty().setValue(false);
 
         showPanel.setOnAction(event -> {
             showPanel.setMouseTransparent(true);
@@ -126,12 +133,23 @@ public class DashboardControler implements Listener {
             pause.setOnFinished(e -> showPanel.setMouseTransparent(false));
             pause.play();
         });
+
+        addNewRouteButton.setOnAction(event -> {
+            try {
+                addNewRoute();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        });
+
+
     }
 
     @FXML
     public void initialize() throws SQLException {
 
     }
+
     private HashMap<Integer, List<Integer>> getTrainRoutes() throws SQLException {
         HashMap<Integer, List<Integer>> trainRoutesMap = new HashMap<>();
 
@@ -181,7 +199,7 @@ public class DashboardControler implements Listener {
         trainCircle.setStrokeWidth(2);
         trainCircle.setScaleZ(-10);
 
-        System.out.println(currentX+" "+currentY);
+//        System.out.println(currentX+" "+currentY);
         // 3. Position the Circle
         trainCircle.setCenterX(currentX);
         trainCircle.setCenterY(currentY);
@@ -196,7 +214,7 @@ public class DashboardControler implements Listener {
 
         trainCircle.setPickOnBounds(false);
         trainCircle.setOnMouseClicked(e -> {
-            System.out.println("Dot clicked");
+//            System.out.println("Dot clicked");
             inspect.setText(train.getTrainData());
             e.consume();
         });
@@ -227,26 +245,50 @@ public class DashboardControler implements Listener {
         stationLabel.setMouseTransparent(true);
         stationBox.setPickOnBounds(true);
         stationBox.setMouseTransparent(false);
+
         stationBox.setOnMouseClicked(event -> {
-            System.out.println("Station clicked: " + station.getName());
-            inspect.setText("Name: " + station.getName() +"\n" +
-                    "City: " + station.getCity() + "\n");
-            boolean prev_select = select_mult;
-            select_mult = event.isShiftDown();
-            if (prev_select != select_mult) {selected_stations.clear();}
-            if(!select_mult){
-                if(selected_stations!=null){
+
+            // Update inspect panel
+            inspect.setText(
+                    "Name: " + station.getName() + "\n" +
+                            "City: " + station.getCity()
+            );
+
+            boolean multiSelect = event.isShiftDown();
+
+            // If switching from multi to single select → reset
+            if (!multiSelect) {
                 selected_stations.clear();
-                selected_stations.put(stations.indexOf(station),station);
+            }
+
+            int index = stations.indexOf(station);
+
+            if (multiSelect) {
+                // Toggle selection (SHIFT-click)
+                if (selected_stations.containsKey(index)) {
+                    selected_stations.remove(index);
+                } else {
+                    selected_stations.put(index, station);
                 }
-                System.out.println(selected_stations.values().stream().findFirst().orElse(null));
+            } else {
+                // Single select
+                selected_stations.put(index, station);
             }
-            else{
-                selected_stations.put(stations.indexOf(station),station);
-                System.out.println(selected_stations.values());
+
+            // ---- UI UPDATE (always) ----
+            if (!selected_stations.isEmpty()) {
+                selectedStationsText.setVisible(true);
+
+                String stationsToAdd = selected_stations.values().stream()
+                        .map(Station::getName)
+                        .collect(Collectors.joining(", "));
+
+                selectedStationsText.setText("Selected stations: " + stationsToAdd);
+            } else {
+                selectedStationsText.setVisible(false);
             }
-            //handleStationClick(station);
         });
+
         stationBox.setOnMouseEntered(e -> stationBox.setStyle(stationBox.getStyle() + "-fx-background-color: #9e9e9e;"));
         stationBox.setOnMouseExited(e -> stationBox.setStyle(stationBox.getStyle() + "-fx-background-color: #3b3f42;"));
         container.getChildren().add(stationBox);
@@ -289,7 +331,7 @@ public class DashboardControler implements Listener {
 
     @Override
     public void update() {
-        System.out.println("update");
+//        System.out.println("update");
         Platform.runLater(this::moveTrainmarker);
     }
 
@@ -299,7 +341,6 @@ public class DashboardControler implements Listener {
             System.out.println("clear thread: " + t.getName());
 //            t.interrupt();
         }
-
     }
 
     private void moveTrainmarker() {
@@ -341,7 +382,7 @@ public class DashboardControler implements Listener {
                         progress = 0;
                         train.setNeighborProgress(0);
 
-                        System.out.println("Train " + train.getTrainName() + " teleported to start: " + firstStation.getName());
+//                        System.out.println("Train " + train.getTrainName() + " teleported to start: " + firstStation.getName());
                     } else {
                         // Normal progression logic
                         int nextStationId = route.get(currentIndexInRoute + 1);
@@ -369,5 +410,50 @@ public class DashboardControler implements Listener {
             circle.setCenterX(currentX);
             circle.setCenterY(currentY);
         });
+    }
+
+    private void addNewRoute() throws SQLException {
+        String sql = "INSERT INTO routes(departure_time) VALUES ('00:00')";
+        database.executeUpdate(connection,sql);
+
+        sql = "SELECT max(route_id) FROM routes";
+        ResultSet resultSet = database.executeQuery(connection,sql);
+        int routeId=0;
+        while (resultSet.next()) {
+//            System.out.println("route_id: " + resultSet.getInt(1));
+            routeId = resultSet.getInt(1);
+        }
+
+
+
+        System.out.println(routeId);
+
+
+
+
+        String defaultArrival = "00:00";
+        int stopOrder = 1;
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("INSERT INTO `route_stops` (`route_id`, `station_id`, `stop_order`, `arrival_time`) VALUES\n");
+
+        for (Station st : selected_stations.values()) {
+            int stationIndex = stations.indexOf(st) + 1;
+
+            sb.append("(")
+                    .append(routeId).append(", ")
+                    .append(stationIndex).append(", ")
+                    .append(stopOrder++).append(", '")
+                    .append(defaultArrival).append("'),\n");
+        }
+
+// remove trailing comma and newline
+        sb.setLength(sb.length() - 2);
+        sb.append(";");
+
+        String query = sb.toString();
+        System.out.println(query);
+
+        database.executeUpdate(connection,query);
     }
 }

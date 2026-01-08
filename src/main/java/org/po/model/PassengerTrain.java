@@ -28,7 +28,6 @@ public class PassengerTrain extends Train {
 
     public PassengerTrain(PassengerTrainBuilder builder){
         super(builder.number, builder.operator, builder.speed);
-
         this.running = builder.running;
         this.currentConnection = builder.current_connection;
         this.connectionProgress = builder.connection_progress;

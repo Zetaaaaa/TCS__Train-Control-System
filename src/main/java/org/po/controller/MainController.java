@@ -32,8 +32,9 @@ public class MainController {
 
     @FXML
     private Button Main;
-    @FXML
-    private Button Settings;
+
+//    @FXML
+//    private Button Settings;
     @FXML
     private Button About;
 
@@ -176,7 +177,7 @@ public class MainController {
                     route("Dashboard");
                     Main.setMouseTransparent(true);
                     Database.setMouseTransparent(false);
-                    Settings.setMouseTransparent(false);
+//                    Settings.setMouseTransparent(false);
                     About.setMouseTransparent(false);
                 } catch (IOException | SQLException e) {
                     throw new RuntimeException(e);
@@ -188,31 +189,31 @@ public class MainController {
                     route("Database");
                     Main.setMouseTransparent(false);
                     Database.setMouseTransparent(true);
-                    Settings.setMouseTransparent(false);
+//                    Settings.setMouseTransparent(false);
                     About.setMouseTransparent(false);
                 } catch (IOException | SQLException e) {
                     throw new RuntimeException(e);
                 }
             });
 
-            Settings.setOnAction(event -> {
-                try {
-                    route("Settings");
-
-                    Main.setMouseTransparent(false);
-                    Database.setMouseTransparent(false);
-                    Settings.setMouseTransparent(true);
-                    About.setMouseTransparent(false);
-                } catch (IOException | SQLException e) {
-                    throw new RuntimeException(e);
-                }
-            });
+//            Settings.setOnAction(event -> {
+//                try {
+//                    route("Settings");
+//
+//                    Main.setMouseTransparent(false);
+//                    Database.setMouseTransparent(false);
+//                    Settings.setMouseTransparent(true);
+//                    About.setMouseTransparent(false);
+//                } catch (IOException | SQLException e) {
+//                    throw new RuntimeException(e);
+//                }
+//            });
             About.setOnAction(event -> {
                 try {
                     route("About");
                     Main.setMouseTransparent(false);
                     Database.setMouseTransparent(false);
-                    Settings.setMouseTransparent(false);
+//                    Settings.setMouseTransparent(false);
                     About.setMouseTransparent(true);
                 } catch (IOException | SQLException e) {
                     throw new RuntimeException(e);

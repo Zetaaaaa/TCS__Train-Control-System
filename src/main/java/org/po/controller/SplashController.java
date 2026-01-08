@@ -27,7 +27,7 @@
             fade.setFromValue(1.0);
             fade.setToValue(0.0);
             //change duration delay here
-            fade.setDelay(Duration.seconds(0));
+            fade.setDelay(Duration.seconds(0.05));
 
             fade.setOnFinished(e -> loadMainApp());
             fade.play();
