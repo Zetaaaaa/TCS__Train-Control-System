@@ -22,4 +22,9 @@ public class Neighbor {
         double dy = destination.getPosition().getY() - station.getPosition().getY();
         return Math.sqrt(dx * dx + dy * dy);
     }
+
+    @Override
+    public String toString() {
+        return destination.getName();
+    }
 }

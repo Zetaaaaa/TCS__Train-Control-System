@@ -6,10 +6,7 @@ import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.PopupControl;
-import javafx.scene.control.Tooltip;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -29,6 +26,7 @@ import java.util.*;
 public class DashboardControler implements Listener {
 
 
+    public TextArea inspect;
     @FXML
     private Pane mapContainer;
 
@@ -83,7 +81,7 @@ public class DashboardControler implements Listener {
             stations.add(new Station(
                     rs.getString(2),
                     new Position(100+rs.getInt(3)*8, 100+rs.getInt(4)*8),
-                    rs.getString(2),new ArrayList<>()));
+                    rs.getString(5),new ArrayList<>()));
         }
 
         ResultSet rs2 = database.executeQuery(connection, "SELECT station_id, destination_id  FROM neighbors order by station_id");
@@ -195,12 +193,13 @@ public class DashboardControler implements Listener {
         trainCircle.setOnMouseEntered(e -> trainCircle.setRadius(10));
         trainCircle.setOnMouseExited(e -> trainCircle.setRadius(8));
 
-        //train click
-//        trainCircle.setPickOnBounds(false);
-//        trainCircle.setOnMouseClicked(e -> {
-//            System.out.println("Dot clicked");
-//            e.consume(); // remove this if blocks should ALSO receive click
-//        });
+
+        trainCircle.setPickOnBounds(false);
+        trainCircle.setOnMouseClicked(e -> {
+            System.out.println("Dot clicked");
+            inspect.setText(train.getTrainData());
+            e.consume();
+        });
 
         // 5. Add to container (on top of lines, but usually on top of stations)
 
@@ -230,30 +229,8 @@ public class DashboardControler implements Listener {
         stationBox.setMouseTransparent(false);
         stationBox.setOnMouseClicked(event -> {
             System.out.println("Station clicked: " + station.getName());
-
-            // Create a PopupControl
-            PopupControl popup = new PopupControl();
-
-// Create content for the popup
-            VBox content = new VBox(10);
-            content.getStyleClass().add("station-popup"); // Assign class
-            content.setPadding(new Insets(15));
-
-// Station name label
-            Label nameLabel = new Label(station.getName());
-            nameLabel.getStyleClass().add("station-popup-title"); // Assign class
-
-            content.getChildren().addAll(nameLabel);
-            popup.getScene().setRoot(content);
-
-            // Set the content to the popup
-            popup.getScene().setRoot(content);
-
-            // Position popup near the mouse click
-            popup.show(stationBox, event.getScreenX() + 10, event.getScreenY() + 10);
-
-            // Hide popup when clicking anywhere else
-            content.setOnMouseClicked(e -> popup.hide());
+            inspect.setText("Name: " + station.getName() +"\n" +
+                    "City: " + station.getCity() + "\n");
             boolean prev_select = select_mult;
             select_mult = event.isShiftDown();
             if (prev_select != select_mult) {selected_stations.clear();}
