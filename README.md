@@ -1,5 +1,6 @@
 # TCS__Train-Control-System
 
+```plantuml
 @startuml
 !theme crt-amber
 
@@ -107,3 +108,4 @@ package tcs_model {
     TrainFactory ..> CargoTrainBuilder : uses
 }
 @enduml
+```
